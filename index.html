@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Nelson Premdoss</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Nelson Premdoss: video editor, AI filmmaker and motion graphics artist.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,400..900&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an edit timeline. A slate-style hero over the running reel, then each section is a "track" with a timecode gutter on the left. Colours from his own explainer graphics: midnight navy, label yellow, diagram blue. Single dark look on purpose: this is a screening room. */
+:root {
+  --bg: #080b14;
+  --bg-2: #0e1322;
+  --panel: #131a2d;
+  --line: #222b44;
+  --ink: #eef1f8;
+  --muted: #8d97b3;
+  --accent: #f6c431;
+  --accent-ink: #12141c;
+  --blue: #2f6ff0;
+  --font-display: "Anybody", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--font-body); }
+a { color: inherit; }
+img, video { max-width: 100%; display: block; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 20px; padding-block: 12px; }
+.mark { font: 800 18px/1 var(--font-display); font-stretch: 130%; letter-spacing: .02em; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.mark i { width: 10px; height: 10px; border-radius: 50%; background: #ff4d3d; box-shadow: 0 0 12px #ff4d3d; animation: rec 1.6s steps(2) infinite; }
+@keyframes rec { 50% { opacity: .25; } }
+.nav { margin-left: auto; display: flex; gap: 4px 18px; flex-wrap: wrap; font-size: 14px; font-weight: 600; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--ink); }
+@media (max-width: 720px) { .nav { display: none; } }
+
+/* hero */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.hero video.bgloop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .38; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 8%, transparent 70%), linear-gradient(0deg, var(--bg) 2%, transparent 45%); }
+.hero .wrap { position: relative; z-index: 1; padding-block: clamp(56px, 11vw, 140px) clamp(40px, 7vw, 80px); display: grid; gap: 22px; }
+.slate { font: 500 12px var(--font-mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slate b { color: var(--accent); font-weight: 500; }
+h1 { margin: 0; font: 900 clamp(52px, 11vw, 148px)/.86 var(--font-display); font-stretch: 62%; text-transform: uppercase; letter-spacing: -.005em; text-wrap: balance; }
+h1 span { display: block; font-stretch: 112%; font-weight: 800; font-size: clamp(17px, 2.6vw, 34px); line-height: 1.2; letter-spacing: .01em; color: var(--accent); margin-top: .5em; }
+h1 em { font-style: normal; color: var(--muted); padding-inline: .15em; }
+.roles { display: flex; flex-wrap: wrap; gap: 8px; }
+.lede { max-width: 58ch; color: #c9d0e3; font-size: 18px; margin: 0; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { font: 700 15px var(--font-body); display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:hover { filter: brightness(1.08); }
+.btn svg { width: 14px; height: 14px; }
+
+/* sections as timeline tracks */
+section.track { padding-block: clamp(56px, 8vw, 96px); border-bottom: 1px solid var(--line); }
+.track-head { display: grid; grid-template-columns: 120px 1fr; gap: 8px 24px; align-items: end; margin-bottom: 32px; }
+.tc { font: 500 13px var(--font-mono); color: var(--accent); letter-spacing: .04em; }
+h2 { margin: 0; font: 850 clamp(32px, 5vw, 56px)/.95 var(--font-display); font-stretch: 75%; text-transform: uppercase; text-wrap: balance; }
+.track-head p { grid-column: 2; margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+@media (max-width: 720px) { .track-head { grid-template-columns: 1fr; } .track-head p { grid-column: 1; } }
+
+/* screens (playable media) */
+.screen { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid var(--line); cursor: pointer; padding: 0; color: var(--ink); text-align: left; }
+.screen video.pvloop, .ex .thumb video.pvloop { width: 100%; height: 100%; object-fit: cover; display: block; }
+.screen img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease, opacity .3s; }
+.screen:hover img { transform: scale(1.03); }
+.screen .play { position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 10px; font: 700 14px var(--font-body); background: rgba(8, 11, 20, .78); padding: 9px 14px 9px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); }
+.screen .play i { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; }
+.screen .play i::before { content: ""; margin-left: 3px; border-left: 10px solid var(--accent-ink); border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+.screen .dur { position: absolute; right: 12px; top: 12px; font: 500 12px var(--font-mono); background: rgba(8, 11, 20, .78); padding: 3px 8px; border-radius: 4px; }
+
+.reels { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+@media (max-width: 860px) { .reels { grid-template-columns: 1fr; } }
+.reel { display: grid; gap: 14px; min-width: 0; }
+.reel h3, .card h3 { margin: 0; font: 800 24px/1.1 var(--font-display); font-stretch: 90%; }
+.reel p, .card p { margin: 0; color: var(--muted); }
+.meta { font: 500 12px var(--font-mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.meta b { color: var(--ink); font-weight: 500; }
+
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+@media (max-width: 960px) { .grid3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .grid3, .grid2 { grid-template-columns: 1fr; } }
+.card { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.card .yt { font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; display: inline-flex; gap: 6px; align-items: center; }
+.card .yt:hover { color: var(--accent); }
+
+.ex-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 1080px) { .ex-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .ex-grid { grid-template-columns: 1fr 1fr; } }
+.ex { text-decoration: none; display: grid; gap: 8px; min-width: 0; }
+.ex .thumb { aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.ex .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.ex:hover .thumb img { transform: scale(1.05); }
+.ex span { font-size: 14px; font-weight: 600; line-height: 1.35; }
+.ex .ex-role { font-style: normal; font-size: 12px; line-height: 1.4; color: var(--muted); }
+.ex small { font: 500 11px var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+/* services as an edit decision list */
+.edl { display: grid; border-top: 1px solid var(--line); }
+.edl > div { display: grid; grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.4fr); gap: 8px 24px; padding-block: 20px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.edl .n { font: 500 13px var(--font-mono); color: var(--accent); }
+.edl h3 { margin: 0; font: 800 26px/1.05 var(--font-display); font-stretch: 85%; text-transform: uppercase; }
+.edl p { margin: 0; color: var(--muted); }
+@media (max-width: 720px) { .edl > div { grid-template-columns: 48px 1fr; } .edl p { grid-column: 2; } }
+
+/* tools */
+.tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+@media (max-width: 860px) { .tools { grid-template-columns: 1fr; } }
+.toolset { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: grid; gap: 14px; align-content: start; }
+.toolset h3 { margin: 0; font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+.chips li { list-style: none; font-weight: 600; font-size: 15px; padding: 7px 13px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); }
+.chips.adobe li { border-color: color-mix(in srgb, var(--blue) 55%, var(--line)); }
+
+/* brands */
+.brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.brand { border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 6px; background: var(--bg-2); }
+.brand b { font: 800 22px/1.1 var(--font-display); font-stretch: 90%; }
+.brand span { color: var(--muted); font-size: 14px; }
+.brand a { font-size: 14px; font-weight: 600; color: var(--accent); }
+
+/* signature: Claude-built animation */
+section.signature { position: relative; background:
+  linear-gradient(180deg, color-mix(in srgb, var(--blue) 22%, var(--bg)) 0%, var(--bg) 100%); overflow: hidden; }
+section.signature::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(color-mix(in srgb, var(--blue) 35%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--blue) 35%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px; mask-image: linear-gradient(180deg, #000 0%, transparent 85%); -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 85%); }
+section.signature .wrap { position: relative; display: grid; gap: 28px; }
+.sig-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.badge { font: 700 12px var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--accent-ink); background: var(--accent); padding: 5px 10px; border-radius: 4px; }
+.sig-h { font-size: clamp(38px, 6.4vw, 84px); font-stretch: 68%; max-width: 16ch; line-height: .92; }
+.sig-h em { font-style: normal; color: var(--accent); }
+.sig-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: start; }
+@media (max-width: 960px) { .sig-body { grid-template-columns: 1fr; } }
+.sig-copy { display: grid; gap: 16px; min-width: 0; }
+.sig-copy p { margin: 0; color: #c9d0e3; max-width: 60ch; }
+.sig-copy .sig-lead { color: var(--ink); font-size: 19px; line-height: 1.55; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 0; }
+.facts div { border-top: 2px solid var(--accent); padding-top: 10px; }
+.facts dt { font: 850 clamp(26px, 3vw, 38px)/1 var(--font-display); font-stretch: 80%; }
+.facts dd { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+.sig-reel { display: grid; gap: 12px; min-width: 0; }
+.sig-reel .screen { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: 0 30px 80px -30px color-mix(in srgb, var(--blue) 70%, transparent); }
+.sig-films { margin-top: 4px; }
+.sig-note { margin: 12px 0 0; color: #c9d0e3; }
+.card h3 small.full { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent-ink); background: var(--accent); border-radius: 4px; padding: 2px 6px; vertical-align: middle; margin-left: 6px; }
+.muted-note { font-size: 14px; color: var(--muted); }
+
+/* role and tools line on each piece */
+.credit { margin: 2px 0 0; display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.credit span { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 8px; }
+.credit b { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent); padding-top: 2px; }
+.facts-row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.facts-row li { font-size: 14px; color: #c9d0e3; border: 1px solid var(--line); background: color-mix(in srgb, var(--panel) 80%, transparent); border-radius: 6px; padding: 4px 10px; }
+.facts-row b { color: var(--ink); }
+
+/* logo strip under the hero */
+.strip { border-bottom: 1px solid var(--line); background: var(--bg-2); }
+.strip .wrap { display: flex; align-items: center; gap: 14px 28px; padding-block: 22px; flex-wrap: wrap; }
+.strip-label { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); white-space: nowrap; }
+.logostrip { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 34px; flex: 1; min-width: 0; }
+.logostrip .logo { background: none; aspect-ratio: auto; padding: 0; display: block; }
+.logostrip .logo:hover { background: none; }
+.logostrip .logo img { display: block; height: 22px; width: auto; max-width: 130px; max-height: none; }
+.logostrip .logo img.mid { height: 30px; }
+.logostrip .logo img.tall { height: 44px; }
+.logostrip .logo .word { font-size: 16px; }
+.also-group { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; padding-left: 24px; border-left: 1px solid var(--line); }
+.also-label { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+@media (max-width: 720px) { .also-group { padding-left: 0; border-left: 0; } }
+.logostrip .logo.also img { height: 18px; opacity: .5; }
+.logostrip .logo.also img.mid { height: 24px; }
+.bar .hire { padding: 8px 14px; font-size: 14px; margin-left: 8px; }
+.bar .hire { white-space: nowrap; }
+@media (max-width: 720px) { .bar .hire { margin-left: auto; } .strip-label { flex-basis: 100%; } .logostrip { gap: 16px 24px; } }
+.btn.ghost { background: transparent; font-weight: 600; }
+.btn .tag { font: 600 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent-ink); background: var(--accent); border-radius: 4px; padding: 2px 6px; }
+
+/* brand work folders */
+.folder .cover { position: relative; }
+.f-badge { position: absolute; right: 10px; bottom: 10px; font: 700 13px var(--font-body); color: var(--accent-ink); background: var(--accent); border-radius: 999px; padding: 6px 12px; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+.f-open { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 700 14px var(--font-body); color: var(--ink); border-top: 1px solid var(--line); padding-top: 10px; }
+.f-open i { font-style: normal; color: var(--accent); transition: transform .2s; }
+.folder:hover .f-open i { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) { .f-open i { transition: none; } }
+.folders { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 1000px) { .folders { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .folders { gap: 10px; } .folder { padding: 8px; } .f-meta { grid-template-columns: minmax(0, 1fr) auto; } .f-meta img { display: none; } .f-meta b { font-size: 16px; } }
+.folder { display: grid; gap: 12px; padding: 12px; text-align: left; cursor: pointer; color: var(--ink); background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; transition: border-color .25s, transform .25s; }
+.folder:hover { border-color: var(--accent); transform: translateY(-3px); }
+.folder .cover { display: block; aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden; background: #000; }
+.folder .cover video { width: 100%; height: 100%; object-fit: cover; }
+.f-meta { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.f-meta img { width: 56px; height: 26px; object-fit: contain; filter: brightness(0) invert(1); opacity: .85; }
+.f-meta b { display: block; font: 800 20px/1.1 var(--font-display); font-stretch: 90%; }
+.f-meta small { color: var(--muted); font-size: 13px; }
+.f-meta em { font: 500 12px var(--font-mono); font-style: normal; color: var(--accent-ink); background: var(--accent); border-radius: 999px; min-width: 26px; text-align: center; padding: 3px 8px; }
+.f-tally { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .folder { transition: none; } .folder:hover { transform: none; } }
+
+.drawer { position: fixed; inset: 0; z-index: 45; background: rgba(4, 6, 12, .82); backdrop-filter: blur(6px); display: grid; justify-items: end; }
+.drawer[hidden] { display: none; }
+.drawer-panel { width: min(1080px, 100%); height: 100%; overflow-y: auto; background: var(--bg); border-left: 1px solid var(--line); padding: calc(20px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 22px; align-content: start; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; position: sticky; top: calc(-20px - env(safe-area-inset-top, 0px)); background: var(--bg); padding-block: 8px; z-index: 1; }
+.drawer-head h3 { margin: 2px 0 0; font: 850 clamp(30px, 4vw, 48px)/1 var(--font-display); font-stretch: 75%; text-transform: uppercase; }
+.drawer-head small { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.pv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 22px 16px; }
+.pv { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.pv.h { grid-column: 1 / -1; max-width: 720px; }
+.pv-media { border-radius: 8px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+.pv.v .pv-media { aspect-ratio: 9 / 16; }
+.pv.h .pv-media { aspect-ratio: 16 / 9; }
+.pv-media video { width: 100%; height: 100%; object-fit: cover; }
+.pv .chip { justify-self: start; font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 4px; padding: 2px 7px; }
+.pv h4 { margin: 0; font: 700 16px/1.3 var(--font-body); }
+.pv .muted { color: var(--muted); font-size: 14px; }
+
+/* logo wall */
+.logowall { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+@media (max-width: 1080px) { .logowall { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 760px) { .logowall { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .logowall { grid-template-columns: repeat(2, 1fr); } }
+.logo { background: var(--bg-2); aspect-ratio: 16 / 9; display: grid; place-items: center; padding: 22px; text-decoration: none; transition: background .25s; }
+.logo:hover { background: var(--panel); }
+.logo img { width: auto; height: auto; max-width: 70%; max-height: clamp(28px, 3.4vw, 44px); object-fit: contain; filter: brightness(0) invert(1); opacity: .82; transition: opacity .25s; }
+.logo:hover img { opacity: 1; }
+.logo img.tall { max-height: clamp(58px, 7vw, 88px); }
+.logo img.mid { max-height: clamp(36px, 4.4vw, 56px); }   /* crests and stacked marks: sized by height to match the wordmarks' weight */
+.logo .word { font: 800 clamp(18px, 2.2vw, 26px)/1 var(--font-display); font-stretch: 95%; color: #c9d0e3; text-align: center; letter-spacing: .01em; }
+
+/* contact */
+.contact { display: grid; gap: 24px; }
+.contact h2 { font-size: clamp(44px, 9vw, 120px); font-stretch: 60%; }
+.links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .links { grid-template-columns: 1fr; } }
+.ct { display: grid; gap: 10px; justify-items: start; align-content: start; padding: 20px 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-2); text-decoration: none; }
+.ct small { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.ct span { font: 700 clamp(16px, 1.55vw, 20px)/1.3 var(--font-body); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; user-select: all; }
+.ct em, .ct .copy { font: 700 13px var(--font-body); font-style: normal; color: var(--accent-ink); background: var(--accent); border: 0; border-radius: 6px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+a.ct:hover { border-color: var(--accent); }
+.note { color: var(--muted); }
+footer { padding-block: 28px; color: var(--muted); font: 500 12px var(--font-mono); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+/* screening room (lightbox) */
+.room { position: fixed; inset: 0; z-index: 50; background: rgba(4, 6, 12, .94); display: grid; place-items: center; padding: calc(56px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.room[hidden] { display: none; }
+.room video { width: min(1200px, 100%); max-height: 80vh; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; }
+.room .close { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
+.room .cap .pbtn { padding: 4px 10px; font-size: 12px; margin-left: 8px; }
+.room .cap .pbtn[disabled] { opacity: .35; cursor: default; }
+.room .cap { margin-top: 12px; color: var(--muted); font: 500 13px var(--font-mono); text-align: center; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .mark i { animation: none; } .screen img, .ex .thumb img { transition: none; } }
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top"><i aria-hidden="true"></i>NELSON PREMDOSS</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#reels">Showreels</a><a href="#brandwork">Brand work</a><a href="#ai">AI films</a><a href="#saas">SaaS</a><a href="#explainers">Explainers</a><a href="#claude">Built with Claude</a><a href="#services">Services</a><a href="#tools">Tools</a>
+    </nav>
+    <a class="btn primary hire" href="#contact">Contact me</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <video class="bgloop" src="media/motion-reel-loop.mp4" poster="media/hero.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+    <div class="wrap">
+      <div class="slate"><span>Scene <b>01</b></span><span>Take <b>01</b></span><span>Roll <b>Portfolio</b></span><span>TC <b id="clock">00:00:00:00</b></span></div>
+      <h1>Nelson Premdoss<span>Video Editor <em>·</em> AI Filmmaker <em>·</em> Motion Graphics Artist</span></h1>
+      <p class="lede">I edit, animate and generate video for explainers, SaaS launches and short-form. Fullscreen motion graphics for long-form YouTube science explainers, cinematic AI sequences for documentary storytelling, and product animation for SaaS brands.</p>
+      <ul class="facts-row" aria-label="About">
+        <li><b>Senior Creative Engineer</b></li><li>3 years' experience</li><li>Bengaluru, India</li><li>Open to full-time, on-site roles</li>
+      </ul>
+      <div class="cta">
+        <button class="btn primary" data-play="motion"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg>Play motion reel</button>
+        <button class="btn" data-play="ai"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg>Play AI reel</button>
+        <button class="btn ghost" id="heroEmail" data-email="nelsonpremdoss.e@gmail.com">nelsonpremdoss.e@gmail.com <span class="tag">Copy</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip" aria-label="Brands I've worked with">
+    <div class="wrap">
+      <span class="strip-label">Worked with</span>
+      <div class="logostrip" id="brandList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="reels">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:01:00:00</span><h2>Showreels</h2><p>Two reels, two crafts, with every shot taken from finished client work.</p></div>
+      <div class="reels" id="reelList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="brandwork">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:01:30:00</span><h2>Brand Work</h2><p>Short-form reels, motion graphics, AI animation and brand films. Click a brand to see every piece; previews play on their own.</p></div>
+      <div class="folders" id="folderList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="ai">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:02:00:00</span><h2>AI Films</h2><p>Cinematic AI sequences generated, edited and graded into documentary-style explainers. Each one plays with its original sound.</p></div>
+      <div class="grid3" id="aiList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="saas">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:03:00:00</span><h2>SaaS Animation</h2><p>Product launch and feature films for Mailmodo: UI animation, kinetic type and pacing built for a landing page or a social feed.</p></div>
+      <div class="grid2" id="saasList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="explainers">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:04:00:00</span><h2>Explainer Videos</h2><p>Long-form science explainers for The Third Idiot by ALLEN Online, with fullscreen animation and AI sequences throughout. Each card opens the video on YouTube, starting where the animation begins where possible.</p></div>
+      <div class="ex-grid" id="exList"></div>
+    </div>
+  </section>
+
+  <section class="track signature" id="claude">
+    <div class="wrap">
+      <div class="sig-top">
+        <span class="tc">00:04:30:00</span>
+        <span class="badge">Signature skill</span>
+      </div>
+      <h2 class="sig-h">Longform Videos <em>Built with Claude</em></h2>
+      <div class="sig-body">
+        <div class="sig-copy">
+          <p class="sig-lead">Code-generated animation usually gives itself away: stock layouts, identical easing, diagrams that look like a template. Making it look hand-built takes real animation craft and the skill to direct the model, and very few people have both.</p>
+          <p>On three ALLEN science explainers I used Claude Opus to build the animation, then directed it scene by scene to the channel's art direction: custom diagrams, choreographed timing and type that sits inside the story. Studio-quality animation with a one-day turnaround, finished in 4K in Premiere Pro.</p>
+          <dl class="facts">
+            <div><dt>3</dt><dd>ALLEN explainers</dd></div>
+            <div><dt>23 min</dt><dd>finished 4K video</dd></div>
+            <div><dt>1 day</dt><dd>turnaround, with Claude Opus 5.5</dd></div>
+          </dl>
+        </div>
+        <div class="sig-reel" id="claudeReel"></div>
+      </div>
+      <p class="sig-note">The three films in full, every frame made this way. Each card previews a moment; press play for the whole video with sound.</p>
+      <div class="grid3 sig-films" id="claudeList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="services">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:06:00:00</span><h2>What I Do</h2><p>From the first assembly to the final mix, as one person or as part of your team.</p></div>
+      <div class="edl" id="svcList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="tools">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:07:00:00</span><h2>Toolkit</h2><p>Adobe for the edit and the motion work, plus the current generation of AI video, image and audio tools.</p></div>
+      <div class="tools" id="toolList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="contact">
+    <div class="wrap contact">
+      <span class="tc">00:08:00:00</span>
+      <h2>Let's cut something</h2>
+      <div class="links" id="contactList"></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© Nelson Premdoss</span><span>Video Editor · AI Filmmaker · Motion Graphics Artist</span></div></footer>
+
+<div class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <div><small id="drawerSub"></small><h3 id="drawerTitle"></h3></div>
+      <button class="btn" id="drawerClose">Close</button>
+    </div>
+    <div class="pv-grid" id="drawerGrid"></div>
+  </div>
+</div>
+
+<div class="room" id="room" hidden role="dialog" aria-modal="true" aria-label="Video player">
+  <button class="btn close" id="roomClose">Close</button>
+  <div><video id="roomVideo" controls playsinline></video><div class="cap" id="roomCap"></div></div>
+</div>
+
+<script>
+/* Everything on the page is rendered from this one object. Add brands, short-form links and contact links here. */
+const SITE = {
+  reels: [
+    { id: "motion", title: "Motion Design Reel", src: "media/motion-reel.mp4", poster: "media/motion-reel.jpg", dur: "1:06",
+      text: "Fullscreen 2D animation from long-form science explainers: orbits and spacetime, deep-sea creatures, dice physics, circuits and wind towers.",
+      meta: ["After Effects", "Explainer animation"],
+      credit: { role: "Motion graphics, concept and storyboard, editing", tools: "After Effects" } },
+    { id: "ai", title: "AI Video Reel", src: "media/ai-reel.mp4", poster: "media/ai-reel.jpg", dur: "0:59",
+      text: "Cinematic AI sequences from documentary explainers: a night-time truck crash, an 18th-century Paris theatre, hospital wards, anime-style study scenes and 3D medical shots.",
+      meta: ["AI video", "Edit and grade"],
+      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "GPT Image 2, Kling 3.0, Seedance 2.0" } },
+  ],
+  claude: {
+    reel: { title: "Built with Claude: animation reel", src: "media/claude-reel.mp4", poster: "media/claude-reel.jpg", dur: "0:40",
+      credit: { tools: "Claude Opus 5.5, Premiere Pro", note: "1-day turnaround" } },
+    films: [
+      { title: "Wavelengths", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation, Color grading, Sound design" }, src: "media/full/wavelengths/p0.mp4", parts: 5, poster: "media/claude-wavelengths.jpg", dur: "7:24",
+        text: "The electromagnetic spectrum: waves that tighten as energy rises, choreographed to the narration." },
+      { title: "Boiling Point", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation, Color grading, Sound design" }, src: "media/full/boiling/p0.mp4", parts: 6, poster: "media/claude-boiling.jpg", dur: "6:11", yt: "https://www.youtube.com/watch?v=uuwJrVgSk8E", ytTitle: "Earth vs Mars: Who Cooks Faster",
+        text: "Why water boils at 88 °C on a mountain: pressure, altitude and temperature in one evolving diagram." },
+      { title: "EOS Satellite", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation" }, src: "media/full/eos/p0.mp4", parts: 6, poster: "media/claude-eos.jpg", dur: "9:41", yt: "https://www.youtube.com/watch?v=16ffenU2fWA", ytTitle: "Everything You Know About Satellites Is Wrong",
+        text: "Geosynchronous orbit explained with a rotating Earth, orbit dials and a satellite that holds its position." },
+    ],
+  },
+  ai: [
+    { title: "The Coma Patient: opening", src: "media/ai-coma-opener.mp4", poster: "media/ai-coma-opener.jpg", dur: "0:21",
+      text: "A stormy night, a truck on a bridge, the crash. The cold open of a documentary about a coma patient.", yt: "https://www.youtube.com/watch?v=mmwBrd79oBo",
+      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "Seedance 2.0 (multi-shot)" } },
+    { title: "Paris theatre sequence", src: "media/ai-paris.mp4", poster: "media/ai-paris.jpg", dur: "0:52",
+      text: "A candle-lit period theatre built entirely with AI for the history section of a projector explainer.", yt: "https://www.youtube.com/watch?v=EeDseEqFaKo&t=18s",
+      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "Nano Banana Pro, Kling 3.0" } },
+    { title: "Speed and the city", src: "media/ai-car-sequence.mp4", poster: "media/ai-car-sequence.jpg", dur: "0:10",
+      text: "An illustrated driving sequence cut on the speedometer, from an explainer on how to study maths.", yt: "https://www.youtube.com/watch?v=nUzUT_vVMxc&t=223s",
+      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "GPT Image 2, Kling 3.0" } },
+  ],
+  saas: [
+    { title: "Mailmodo: The Marketing Stream", src: "media/saas-marketing-stream.mp4", poster: "media/saas-marketing-stream.jpg", dur: "1:03",
+      text: "Launch film for a free library of marketing webinars, podcasts and expert talks.", yt: "https://www.youtube.com/watch?v=qIq0f-LQdT8",
+      credit: { role: "Motion graphics, editing", tools: "After Effects" } },
+    { title: "Mailmodo: AI Email Campaign Planner", src: "media/saas-ai-planner.mp4", poster: "media/saas-ai-planner.jpg", dur: "0:33",
+      text: "Feature film for an AI tool that turns a website URL into a ready-to-use email strategy.", yt: "https://www.youtube.com/watch?v=SfW0BoywqFY",
+      credit: { role: "Editing, motion graphics", tools: "After Effects" } },
+  ],
+  /* `t` (seconds) deep-links to where the animation starts; left out where the YouTube upload's timing isn't confirmed */
+  explainers: [
+    { title: "I Made a Projector With Just ₹100", thumb: "media/thumb-projector.jpg", pv: "ex-projector", id: "EeDseEqFaKo", role: "Concept and storyboard, Editing, Motion graphics, AI generation", t: 18, tag: "AI + motion" },
+    { title: "The Coma Patient Who Could Hear Everything", thumb: "media/thumb-coma.jpg", pv: "ex-coma", id: "mmwBrd79oBo", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "AI film" },
+    { title: "Stop Solving More Sums. Do This Instead.", thumb: "media/thumb-sums.jpg", pv: "ex-sums", id: "nUzUT_vVMxc", role: "Concept and storyboard, Editing, Motion graphics, AI generation", t: 171, tag: "AI + motion" },
+    { title: "What If We Lost the Sun Today?", thumb: "media/thumb-gravity.jpg", pv: "ex-gravity", id: "Hs0qir_VCH8", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "Motion + AI" },
+    { title: "3 Formulas That Built Modern Civilization", thumb: "media/thumb-pythagoras.jpg", pv: "ex-pythagoras", id: "FUX_a0FTZTY", role: "Concept and storyboard, Editing, Motion graphics, AI generation", t: 103, tag: "Motion" },
+    { title: "Can You Actually Hack the Dice?", thumb: "media/thumb-dice.jpg", pv: "ex-dice", id: "trREQZaVkFs", role: "Concept and storyboard, Editing, Motion graphics", tag: "Motion" },
+    { title: "What's Hiding in the Deepest Parts of the Ocean?", thumb: "media/thumb-submarine.jpg", pv: "ex-ocean", id: "jdJEH0iRPjs", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "Motion" },
+    { title: "Can a ₹50 DIY AC Beat a ₹50,000 AC?", thumb: "media/thumb-zero-ac.jpg", pv: "ex-ac", id: "LctWvA1e1dU", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "Motion" },
+  ],
+  services: [
+    ["Explainer videos", "Long-form YouTube explainers from script to final cut: pacing, fullscreen animation, b-roll and on-screen type that keep a 10-minute topic moving."],
+    ["SaaS and product animation", "Launch films and feature walkthroughs built from your UI: animated screens, kinetic type and a clear story about what the product does."],
+    ["AI video production", "Cinematic AI sequences for stories that can't be filmed: historical scenes, recreations and concept shots, generated, edited and graded to sit inside live footage."],
+    ["Motion graphics", "2D and 2.5D animation, diagrams, data and title design in After Effects."],
+    ["Short-form editing", "Reels, Shorts and TikTok edits with hooks, captions, sound design and pacing for the first three seconds."],
+    ["Trailer editing", "Trailers and teasers that build tension through structure, music and sound."],
+    ["Color grading", "Consistent looks across mixed sources, from camera footage to AI-generated shots."],
+    ["Sound design", "SFX, music edits and mixes that make motion graphics and AI sequences feel physical."],
+  ],
+  tools: [
+    { name: "Edit and motion", adobe: true, items: ["Adobe Premiere Pro", "Adobe After Effects", "Adobe Photoshop"] },
+    { name: "AI video", items: ["Kling 3.0", "Seedance 2.0", "Runway", "Higgsfield"] },
+    { name: "AI image and animation", items: ["GPT Image 2", "Nano Banana Pro", "Magnific AI", "Claude Opus 5.5"] },
+  ],
+
+  /* Brand work: one folder per brand. Previews are short silent loops; `url` links to the original post (omit it for unpublished work). */
+  brandwork: [
+    { brand: "Markets by Zerodha", logo: "logos/zerodha.svg", cover: "markets-rupee", items: [
+      { type: "AI animation", title: "Why the rupee keeps falling", media: "markets-rupee", v: true, role: "Concept and storyboard, Editing, AI generation, Sound design" },
+      { type: "Motion graphics", title: "Milky Mist IPO", media: "markets-milkymist", v: true, role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+      { type: "Short-form", title: "IPO investing pitfalls", media: "markets-ipo", v: true, url: "https://www.instagram.com/reel/DJEHeleAX4W/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+      { type: "Short-form", title: "Is the transformer business ready to explode?", media: "markets-transformers", v: true, url: "https://www.instagram.com/reel/DUsTIQ9D0OF/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+      { type: "Short-form", title: "The De Beers diamond myth", media: "markets-diamonds", v: true, url: "https://www.instagram.com/reel/DNiOHZzvXTS/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+      { type: "Short-form", title: "India's UPI revolution", media: "markets-upi", v: true, url: "https://www.instagram.com/reel/DMuqcxUvi_z/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+      { type: "Short-form", title: "Women on the night shift", media: "markets-night-shift", v: true, url: "https://www.instagram.com/reel/DOLpeR_j2Tm/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+      { type: "Short-form", title: "The attack of the zombie firms", media: "markets-zombie", v: true, url: "https://www.instagram.com/reel/DOIrtvCDxIY/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
+    ] },
+    { brand: "Coca-Cola", sub: "Charged", logo: "logos/coca-cola.svg", cover: "charged-1", items: [
+      { type: "Short-form", title: "Street vox pop", media: "charged-1", v: true, url: "https://www.instagram.com/reel/DaCLdXyxWlO/", role: "Concept and storyboard, Editing, AI generation" },
+      { type: "Short-form", title: "Street vox pop, part two", media: "charged-2", v: true, url: "https://www.instagram.com/reel/DXY3SJYjY22/", role: "Concept and storyboard, Editing, AI generation" },
+    ] },
+    { brand: "Lumio", logo: "logos/lumio.svg", cover: "lumio-aura", items: [
+      { type: "Brand film", title: "Lumio Aura 5: HiFi Sound, Bar None", media: "lumio-aura", url: "https://www.youtube.com/watch?v=X2QHRhWtY-I", role: "Concept and storyboard, Editing, Motion graphics" },
+    ] },
+    { brand: "Zoho", sub: "Builders Central", logo: "logos/zoho.svg", cover: "zoho-builders", items: [
+      { type: "Brand film", title: "SaaS Is Dead. Build This Instead.", media: "zoho-builders", url: "https://www.youtube.com/watch?v=NVPWYTZZpnI", role: "Concept and storyboard, Editing, Motion graphics" },
+    ] },
+    { brand: "Royal Challengers Bengaluru", sub: "RCB Kannada", logo: "logos/rcb.png", tall: true, cover: "rcb-podcast", items: [
+      { type: "Podcast edit", title: "bigbasket now Podcast with Virat Kohli", media: "rcb-podcast", v: true, url: "https://www.instagram.com/reel/DEUfF5lS4mP/" },
+      { type: "Feature video", title: "Inside the RCB auction table", media: "rcb-feature", url: "https://www.instagram.com/reel/DDCdBJSMygf/" },
+    ] },
+    { brand: "Vi", logo: "logos/vi.svg", cover: "vi-score", items: [
+      { type: "Short-form", title: "Vi Score review reel", media: "vi-score", v: true, url: "https://www.instagram.com/reel/DT8Aun7kjVV/" },
+    ] },
+  ],
+  /* Logo wall, in this order. Put a logo file at logos/<slug>.svg or .png and set `logo`; without one the brand name is shown. */
+  brands: [
+    { name: "Zerodha", slug: "zerodha", logo: "logos/zerodha.svg" },
+    { name: "Coca-Cola", slug: "coca-cola", logo: "logos/coca-cola.svg" },
+    { name: "ALLEN", slug: "allen", logo: "logos/allen.svg", note: "The Third Idiot YouTube channel", links: [{ label: "Channel", url: "https://www.youtube.com/@thethirdidiot" }] },
+    { name: "RCB", slug: "rcb", logo: "logos/rcb.png", tall: true },
+    { name: "Nothing", also: true, slug: "nothing", logo: "logos/nothing.svg" },
+    { name: "Zoho", slug: "zoho", logo: "logos/zoho.svg", size: "mid" },
+    { name: "Cleartrip", also: true, slug: "cleartrip", logo: "logos/cleartrip.svg" },
+    { name: "Licious", also: true, slug: "licious", logo: "logos/licious.png", size: "mid" },
+    { name: "Peakst8", also: true, slug: "peakst8", logo: "logos/peakst8.svg" },
+    { name: "Vi", slug: "vi", logo: "logos/vi.svg", size: "mid" },
+    { name: "Lumio", slug: "lumio", logo: "logos/lumio.svg" },
+    { name: "Mailmodo", slug: "mailmodo", logo: "logos/mailmodo.svg", note: "SaaS launch and feature animation" },
+  ],
+  /* type "copy" shows the value as text with a Copy button; type "link" opens a site */
+  contact: [
+    { type: "copy", label: "Email", value: "nelsonpremdoss.e@gmail.com" },
+    { type: "copy", label: "Phone / WhatsApp", value: "+91 99943 17417" },
+    { type: "link", label: "LinkedIn", value: "in/nelson-premdoss-e", url: "https://www.linkedin.com/in/nelson-premdoss-e-5a8a0b144" },
+  ],
+};
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/* silent preview loop for every full video (keyed by the full video's file); click opens the full video with sound */
+const PV = { "media/motion-reel.mp4": "motion-reel", "media/ai-reel.mp4": "ai-reel", "media/claude-reel.mp4": "claude-reel",
+  "media/ai-coma-opener.mp4": "ai-coma", "media/ai-paris.mp4": "ai-paris", "media/ai-car-sequence.mp4": "ai-car",
+  "media/saas-marketing-stream.mp4": "saas-stream", "media/saas-ai-planner.mp4": "saas-planner",
+  "media/full/wavelengths/p0.mp4": "claude-wavelengths", "media/full/boiling/p0.mp4": "claude-boiling", "media/full/eos/p0.mp4": "claude-eos" };
+const preview = (name, poster) => `<video class="pvloop" src="media/pv/${name}.mp4" poster="${esc(poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`;
+const screen = (v, key) => `<button class="screen" data-src="${esc(v.src)}" data-cap="${esc(v.title)}" ${v.parts ? `data-parts="${v.parts}"` : ""} ${key ? `data-key="${key}"` : ""} aria-label="Play ${esc(v.title)} with sound">
+  ${PV[v.src] ? preview(PV[v.src], v.poster) : `<img src="${esc(v.poster)}" alt="" loading="lazy">`}<span class="dur">${esc(v.dur)}</span><span class="play"><i aria-hidden="true"></i>Play</span></button>`;
+const credit = (c) => c ? `<p class="credit">${c.role ? `<span><b>My role</b>${esc(c.role)}</span>` : ""}${c.tools ? `<span><b>Tools</b>${esc(c.tools)}</span>` : ""}${c.note ? `<span><b>Turnaround</b>${esc(c.note.replace(/ turnaround$/i, ""))}</span>` : ""}</p>` : "";
+const ytLink = (u, t = "Watch on YouTube") => u ? `<a class="yt" href="${esc(u)}" target="_blank" rel="noopener">${t} ↗</a>` : "";
+
+$("reelList").innerHTML = SITE.reels.map((r) => `<article class="reel">${screen(r, r.id)}<div class="meta">${r.meta.map((m) => `<b>${esc(m)}</b>`).join("")}<span>${r.dur}</span></div><h3>${esc(r.title)}</h3><p>${esc(r.text)}</p>${credit(r.credit)}</article>`).join("");
+$("claudeReel").innerHTML = `${screen(SITE.claude.reel)}<div class="meta"><b>Claude Opus</b><b>Premiere Pro</b><span>${SITE.claude.reel.dur}</span></div>${credit(SITE.claude.reel.credit)}`;
+$("claudeList").innerHTML = SITE.claude.films.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)} <small class="full">Full video</small></h3><p>${esc(v.text)}</p>${credit(v.credit)}${v.yt ? ytLink(v.yt, "On YouTube: " + esc(v.ytTitle)) : `<span class="muted-note">Not yet published on YouTube</span>`}</article>`).join("");
+$("aiList").innerHTML = SITE.ai.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}${ytLink(v.yt, "Full video on YouTube")}</article>`).join("");
+$("saasList").innerHTML = SITE.saas.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}${ytLink(v.yt)}</article>`).join("");
+$("exList").innerHTML = SITE.explainers.map((e) => `<a class="ex" href="https://www.youtube.com/watch?v=${esc(e.id)}${e.t ? "&t=" + e.t + "s" : ""}" target="_blank" rel="noopener"><div class="thumb">${e.pv ? preview(e.pv, e.thumb) : `<img src="${esc(e.thumb)}" alt="" loading="lazy">`}</div><small>${esc(e.tag)}</small><span>${esc(e.title)}</span><em class="ex-role">${esc(e.role || "")}</em></a>`).join("");
+$("svcList").innerHTML = SITE.services.map(([h, p], i) => `<div><span class="n">${String(i + 1).padStart(2, "0")}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("");
+$("toolList").innerHTML = SITE.tools.map((t) => `<div class="toolset"><h3>${esc(t.name)}</h3><ul class="chips${t.adobe ? " adobe" : ""}">${t.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
+const brandCard = (b) => `<div class="brand"><b>${esc(b.name || b.brand)}</b><span>${esc(b.note || "")}</span>${(b.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}</div>`;
+const logoHTML = (b) => {
+  const inner = b.logo ? `<img src="${esc(b.logo)}" alt="${esc(b.name)}" loading="lazy"${b.tall ? ' class="tall"' : b.size ? ` class="${b.size}"` : ""}>` : `<span class="word">${esc(b.name)}</span>`;
+  const tip = b.note ? ` title="${esc(b.note)}"` : "";
+  const link = b.links && b.links[0];
+  return link ? `<a class="logo" href="${esc(link.url)}" target="_blank" rel="noopener"${tip}>${inner}</a>` : `<div class="logo"${tip}>${inner}</div>`;
+};
+$("brandList").innerHTML = SITE.brands.filter((b) => !b.also).map(logoHTML).join("")
+  + `<span class="also-group"><span class="also-label">Also worked with</span>` + SITE.brands.filter((b) => b.also).map((b) => logoHTML(b).replace('class="logo"', 'class="logo also"')).join("") + `</span>`;
+$("contactList").innerHTML = SITE.contact.map((c) => c.type === "link"
+  ? `<a class="ct" href="${esc(c.url)}" target="_blank" rel="noopener"><small>${esc(c.label)}</small><span>${esc(c.value)}</span><em>Open ↗</em></a>`
+  : `<div class="ct"><small>${esc(c.label)}</small><span class="val">${esc(c.value)}</span><button class="copy" data-copy="${esc(c.value)}">Copy</button></div>`).join("");
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("button.copy"); if (!b) return;
+  try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "Copied"; }
+  catch { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = "Selected, press Ctrl+C"; }
+  setTimeout(() => (b.textContent = "Copy"), 2000);
+});
+
+/* brand work folders */
+const M = (n, ext) => `media/brand/${n}.${ext}`;
+const loop = (n, cls = "") => `<video class="${cls}" src="${M(n, "mp4")}" poster="${M(n, "jpg")}" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>`;
+const tally = (items) => Object.entries(items.reduce((m, i) => (m[i.type] = (m[i.type] || 0) + 1, m), {})).map(([t, n]) => `${n} ${t.toLowerCase()}`).join(" · ");
+$("folderList").innerHTML = SITE.brandwork.map((b, i) => `<button class="folder" data-folder="${i}" aria-label="Open ${esc(b.brand)} work">
+  <span class="cover">${loop(b.cover)}<span class="f-badge">${b.items.length > 1 ? `View all ${b.items.length}` : "View"} →</span></span>
+  <span class="f-meta"><img src="${esc(b.logo)}" alt=""><span><b>${esc(b.brand)}</b>${b.sub ? `<small>${esc(b.sub)}</small>` : ""}</span><em>${b.items.length}</em></span>
+  <span class="f-tally">${esc(tally(b.items))}</span>
+  <span class="f-open">${b.items.length > 1 ? `View all ${b.items.length} pieces` : "View the piece"} <i aria-hidden="true">→</i></span></button>`).join("");
+const drawer = $("drawer");
+let drawerFocus = null;
+function openDrawer(i) {
+  const b = SITE.brandwork[i]; drawerFocus = document.activeElement;
+  $("drawerTitle").textContent = b.brand; $("drawerSub").textContent = (b.sub ? b.sub + " · " : "") + tally(b.items);
+  $("drawerGrid").innerHTML = b.items.map((it) => `<article class="pv ${it.v ? "v" : "h"}">
+    <div class="pv-media">${loop(it.media)}</div>
+    <span class="chip">${esc(it.type)}</span><h4>${esc(it.title)}</h4>
+    ${it.role ? `<p class="credit"><span><b>My role</b>${esc(it.role)}</span></p>` : ""}
+    ${it.url ? `<a class="yt" href="${esc(it.url)}" target="_blank" rel="noopener">${it.url.includes("youtube") ? "Watch on YouTube" : "View on Instagram"} ↗</a>` : `<span class="muted">Preview only</span>`}</article>`).join("");
+  drawer.hidden = false; document.body.style.overflow = "hidden"; $("drawerClose").focus();
+}
+function closeDrawer() { $("drawerGrid").innerHTML = ""; drawer.hidden = true; document.body.style.overflow = ""; if (drawerFocus) drawerFocus.focus(); }
+document.addEventListener("click", (e) => {
+  const f = e.target.closest("[data-folder]"); if (f) return openDrawer(+f.dataset.folder);
+  if (e.target === drawer || e.target.id === "drawerClose") closeDrawer();
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !drawer.hidden) closeDrawer(); });
+/* folder covers play only while on screen */
+const io = new IntersectionObserver((es) => es.forEach((en) => { const v = en.target; en.isIntersecting ? v.play().catch(() => {}) : v.pause(); }), { threshold: .2 });
+document.querySelectorAll(".folder video, video.pvloop").forEach((v) => io.observe(v));
+
+/* hero email: copy on click */
+$("heroEmail").addEventListener("click", async (e) => {
+  const b = e.currentTarget, tag = b.querySelector(".tag");
+  try { await navigator.clipboard.writeText(b.dataset.email); tag.textContent = "Copied"; }
+  catch { const r = document.createRange(); r.selectNodeContents(b.firstChild); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); tag.textContent = "Press Ctrl+C"; }
+  setTimeout(() => (tag.textContent = "Copy"), 2000);
+});
+
+/* screening room */
+const room = $("room"), rv = $("roomVideo");
+let lastFocus = null;
+/* full-length films are split into parts (p0.mp4, p1.mp4 …) that play back to back */
+let part = 0, parts = 1, partBase = "", partCap = "";
+function loadPart(i, autoplay = true) {
+  part = i; rv.src = partBase.replace(/p0\.mp4$/, `p${i}.mp4`);
+  $("roomCap").innerHTML = parts > 1
+    ? `${esc(partCap)} · Part ${i + 1} of ${parts} <button class="btn pbtn" data-part="${i - 1}" ${i === 0 ? "disabled" : ""}>Previous part</button><button class="btn pbtn" data-part="${i + 1}" ${i === parts - 1 ? "disabled" : ""}>Next part</button>`
+    : esc(partCap);
+  if (autoplay) rv.play().catch(() => {});
+}
+rv.addEventListener("ended", () => { if (part < parts - 1) loadPart(part + 1); });
+function openRoom(src, cap, n = 1) {
+  lastFocus = document.activeElement;
+  partBase = src; partCap = cap; parts = n; room.hidden = false; $("roomClose").focus();
+  loadPart(0);
+}
+function closeRoom() { rv.pause(); rv.removeAttribute("src"); rv.load(); room.hidden = true; if (lastFocus) lastFocus.focus(); }
+document.addEventListener("click", (e) => {
+  const pb = e.target.closest("[data-part]"); if (pb) return loadPart(+pb.dataset.part);
+  const s = e.target.closest(".screen"); if (s) return openRoom(s.dataset.src, s.dataset.cap, +(s.dataset.parts || 1));
+  const p = e.target.closest("[data-play]"); if (p) { const r = SITE.reels.find((x) => x.id === p.dataset.play); return openRoom(r.src, r.title); }
+  if (e.target === room || e.target.id === "roomClose") closeRoom();
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !room.hidden) closeRoom(); });
+
+/* running timecode on the slate */
+const t0 = performance.now();
+(function tick() {
+  const f = Math.floor((performance.now() - t0) / 40), p = (n) => String(n).padStart(2, "0");
+  $("clock").textContent = `${p(Math.floor(f / 90000) % 24)}:${p(Math.floor(f / 1500) % 60)}:${p(Math.floor(f / 25) % 60)}:${p(f % 25)}`;
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(tick);
+})();
+</script>
+
+</body>
+</html>
