@@ -510,7 +510,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
 <script src="data.js"></script>
 <script>
-/* Everything on the page is rendered from SITE, defined in data.js. */
+/* Everything on the page is rendered from SITE, defined in data.js. (AI Films, SaaS and Claude film cards don't show their `text`; it stays in the data.) */
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 /* silent preview loop for every full video (keyed by the full video's file); click opens the full video with sound */
@@ -541,9 +541,9 @@ const ytLink = (u, t = "Watch on YouTube") => u ? `<a class="yt" href="${esc(u)}
 
 $("reelList").innerHTML = SITE.reels.map((r) => `<article class="reel">${screen(r, r.id)}<div class="meta">${r.meta.map((m) => `<b>${esc(m)}</b>`).join("")}<span>${r.dur}</span></div><h3>${esc(r.title)}</h3><p>${esc(r.text)}</p>${credit(r.credit)}</article>`).join("");
 $("claudeReel").innerHTML = `${screen(SITE.claude.reel)}<div class="meta"><b>Claude Opus</b><b>Premiere Pro</b><span>${SITE.claude.reel.dur}</span></div>${credit(SITE.claude.reel.credit)}`;
-$("claudeList").innerHTML = SITE.claude.films.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)} <small class="full">Full video</small></h3><p>${esc(v.text)}</p>${credit(v.credit)}</article>`).join("");
-$("aiList").innerHTML = SITE.ai.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}</article>`).join("");
-$("saasList").innerHTML = SITE.saas.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}</article>`).join("");
+$("claudeList").innerHTML = SITE.claude.films.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)} <small class="full">Full video</small></h3>${credit(v.credit)}</article>`).join("");
+$("aiList").innerHTML = SITE.ai.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3>${credit(v.credit)}</article>`).join("");
+$("saasList").innerHTML = SITE.saas.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3>${credit(v.credit)}</article>`).join("");
 $("exList").innerHTML = SITE.explainers.map((e) => `<button class="ex" data-src="yt:${esc(e.id)}@${e.t || 0}" data-cap="${esc(e.title)}" aria-label="Play ${esc(e.title)} with sound"><div class="thumb">${e.pv ? preview(e.pv, e.thumb) : `<img src="${esc(e.thumb)}" alt="" loading="lazy">`}</div><small>${esc(e.tag)}</small><span>${esc(e.title)}</span><em class="ex-role">${esc(e.role || "")}</em>${filled(e.turnaround) ? `<span class="ex-ta"><b>Turnaround</b>${esc(e.turnaround)}</span>` : ""}</button>`).join("");
 $("svcList").innerHTML = SITE.services.map(([h, p], i) => `<div><span class="n">${String(i + 1).padStart(2, "0")}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("");
 $("toolList").innerHTML = SITE.tools.map((t) => {

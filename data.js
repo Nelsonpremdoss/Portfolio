@@ -58,7 +58,7 @@ const SITE = {
     { title: "Boiling Point: the Andes expedition", src: "media/ai-andes.mp4", poster: "media/ai-andes.jpg", dur: "0:48",
       text: "An animated mountain expedition that tries to cook potatoes at altitude, setting up why water boils below 100 °C.", yt: "https://www.youtube.com/watch?v=uuwJrVgSk8E&t=16s",
       credit: { role: "Concept and storyboard, Editing, AI generation, Color grading, Sound design",
-        tools: "TODO: AI tools used for this sequence" } },
+        tools: "Kling" } },
     { title: "Wavelengths: Herschel finds infrared", src: "media/ai-herschel.mp4", poster: "media/ai-herschel.jpg", dur: "0:31",
       text: "William Herschel splits sunlight with a prism and finds heat beyond the red: a period recreation built shot by shot with AI.",
       credit: { role: "Concept and storyboard, Editing, AI generation, Color grading, Sound design", tools: "Kling" } },
