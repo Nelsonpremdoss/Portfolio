@@ -105,20 +105,24 @@ h2 { margin: 0; font: 850 clamp(32px, 5vw, 56px)/.95 var(--font-display); font-s
 @media (max-width: 1080px) { .ex-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .ex-grid { grid-template-columns: 1fr 1fr; } }
 .ex { text-decoration: none; display: grid; gap: 8px; min-width: 0; }
+button.ex { font: inherit; color: inherit; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; align-content: start; }
 .ex .thumb { aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
 .ex .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .ex:hover .thumb img { transform: scale(1.05); }
 .ex span { font-size: 14px; font-weight: 600; line-height: 1.35; }
 .ex .ex-role { font-style: normal; font-size: 12px; line-height: 1.4; color: var(--muted); }
+.ex .ex-ta { display: flex; gap: 8px; align-items: baseline; font-size: 12px; font-weight: 500; color: var(--muted); }
+.ex .ex-ta b { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
 .ex small { font: 500 11px var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 
 /* services as an edit decision list */
-.edl { display: grid; border-top: 1px solid var(--line); }
-.edl > div { display: grid; grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.4fr); gap: 8px 24px; padding-block: 20px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.edl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+@media (max-width: 1000px) { .edl { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .edl { grid-template-columns: 1fr; } }
+.edl > div { display: grid; gap: 8px; align-content: start; padding: 18px; background: var(--bg-2); min-width: 0; }
 .edl .n { font: 500 13px var(--font-mono); color: var(--accent); }
-.edl h3 { margin: 0; font: 800 26px/1.05 var(--font-display); font-stretch: 85%; text-transform: uppercase; }
-.edl p { margin: 0; color: var(--muted); }
-@media (max-width: 720px) { .edl > div { grid-template-columns: 48px 1fr; } .edl p { grid-column: 2; } }
+.edl h3 { margin: 0; font: 800 20px/1.1 var(--font-display); font-stretch: 85%; text-transform: uppercase; }
+.edl p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
 /* tools */
 .tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
@@ -232,6 +236,78 @@ section.signature .wrap { position: relative; display: grid; gap: 28px; }
 .pv h4 { margin: 0; font: 700 16px/1.3 var(--font-body); }
 .pv .muted { color: var(--muted); font-size: 14px; }
 
+/* placeholders (draft view only): dashed boxes and lines that start with "TODO:" */
+.todo { border: 1px dashed color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 8px; background: color-mix(in srgb, var(--accent) 7%, var(--bg-2)); color: var(--accent); font: 500 12px/1.45 var(--font-mono); padding: 10px 12px; overflow-wrap: anywhere; }
+.todo.ph-v { aspect-ratio: 9 / 16; display: grid; place-items: center; text-align: center; height: 100%; border-radius: 0; border: 0; }
+.todo.ph-w { aspect-ratio: 16 / 9; display: grid; place-items: center; text-align: center; }
+.todo.ph-sq { aspect-ratio: 1; display: grid; place-items: center; text-align: center; }
+.todo.ph-fill { width: 100%; height: 100%; display: grid; place-items: center; text-align: center; border-radius: 0; border: 0; }
+.credit .todo-line b, .credit .todo-line { color: var(--accent); opacity: .8; }
+.chips li.todo-chip { border-style: dashed; border-color: var(--accent); color: var(--accent); }
+.chips li.todo-chip small { display: block; font: 500 10px var(--font-mono); opacity: .8; }
+
+/* fintech & short-form: brand pieces as visible cards */
+.pv-media .screen { aspect-ratio: auto; height: 100%; border: 0; border-radius: 0; }
+.pv-media { position: relative; }
+.pv .credit span { grid-template-columns: 1fr; gap: 0; }
+@media (max-width: 520px) { .ft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; } .ft-grid .pv h4 { font-size: 14px; } .ft-grid .credit { font-size: 12px; } }
+.pv .credit span + span { margin-top: 4px; }
+
+/* how I build it: five steps in a row, stacked on narrow screens */
+.pipe-top { display: grid; gap: 8px; margin-bottom: 20px; }
+.pipe { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; counter-reset: none; }
+@media (max-width: 1000px) { .pipe { grid-template-columns: 1fr; } }
+.pipe-step { display: grid; gap: 8px; align-content: start; min-width: 0; padding: 14px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; }
+.pipe-media { aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #000; }
+.pipe-media img, .pipe-media video { width: 100%; height: 100%; object-fit: cover; }
+.pipe-media .todo { height: 100%; aspect-ratio: auto; border-radius: 0; }
+.pipe-step .n { font: 500 13px var(--font-mono); color: var(--accent); }
+.pipe-step h3 { margin: 0; font: 800 20px/1.1 var(--font-display); font-stretch: 85%; text-transform: uppercase; }
+.pipe-step p { margin: 0; color: var(--muted); font-size: 14px; }
+.pipe-break { margin-top: 28px; max-width: 760px; }
+@media (min-width: 1001px) { .pipe-step .credit span { grid-template-columns: 1fr; gap: 2px; } }
+
+/* finishing */
+.fin { display: grid; gap: 0; }
+.fin-block { display: grid; gap: 14px; padding-block: 8px 36px; }
+.fin-block + .fin-block { border-top: 1px solid var(--line); padding-top: 32px; }
+.sub-h { margin: 0; font: 800 26px/1.05 var(--font-display); font-stretch: 85%; text-transform: uppercase; }
+.sub-p { margin: 0; color: var(--muted); max-width: 62ch; }
+.ba-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 22px; }
+.ba-wrap { margin: 0; display: grid; gap: 8px; min-width: 0; }
+.ba-wrap figcaption { color: var(--muted); font-size: 14px; }
+.ba { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; touch-action: pan-y; }
+.ba img, .ba .todo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; aspect-ratio: auto; border-radius: 0; }
+.ba-before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.ba-line { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; }
+.ba-line::after { content: ""; position: absolute; top: 50%; left: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: var(--accent); box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.ba-tag { position: absolute; top: 10px; font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; background: rgba(8, 11, 20, .78); padding: 3px 8px; border-radius: 4px; pointer-events: none; }
+.ba-tag.l { left: 10px; } .ba-tag.r { right: 10px; }
+.ba input[type=range] { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+.ba:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+.snd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 22px; }
+.snd-card { margin: 0; display: grid; gap: 10px; align-content: start; padding: 14px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.snd-card audio { width: 100%; height: 40px; }
+.snd-card figcaption { color: var(--muted); font-size: 13px; line-height: 1.45; }
+.snd-card figcaption b { display: block; color: var(--ink); font-size: 14px; margin-bottom: 2px; }
+.ab { display: inline-grid; grid-template-columns: 1fr 1fr; justify-self: start; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.ab-btn { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; padding: 6px 14px; background: transparent; color: var(--muted); border: 0; cursor: pointer; }
+.ab-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.gfx { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .gfx { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.gfx figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+.gfx img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-2); }
+.gfx figcaption { color: var(--muted); font-size: 13px; }
+/* one cut in every format: widths in proportion so the three heights match */
+.fmt { display: grid; grid-template-columns: 9fr 16fr 28.44fr; gap: 16px; align-items: end; }
+@media (max-width: 760px) { .fmt { grid-template-columns: 1fr; } .fmt-cut.r9x16 { max-width: 300px; } .fmt-cut.r1x1 { max-width: 420px; } }
+.fmt-cut { margin: 0; display: grid; gap: 8px; min-width: 0; }
+.fmt-media { border-radius: 8px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+.fmt-cut.r9x16 .fmt-media { aspect-ratio: 9 / 16; } .fmt-cut.r1x1 .fmt-media { aspect-ratio: 1; } .fmt-cut.r16x9 .fmt-media { aspect-ratio: 16 / 9; }
+.fmt-media video { width: 100%; height: 100%; object-fit: cover; }
+.fmt-cut figcaption { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.fmt-cut figcaption b { color: var(--accent); font-weight: 500; margin-right: 6px; }
+
 /* logo wall */
 .logowall { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 @media (max-width: 1080px) { .logowall { grid-template-columns: repeat(4, 1fr); } }
@@ -262,7 +338,9 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 /* screening room (lightbox) */
 .room { position: fixed; inset: 0; z-index: 50; background: rgba(4, 6, 12, .94); display: grid; place-items: center; padding: calc(56px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .room[hidden] { display: none; }
-.room video { width: min(1200px, 100%); max-height: 80vh; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; }
+.room-stage { display: grid; justify-items: center; max-width: 100%; }
+.room video { max-width: min(1200px, 100%); max-height: 80vh; min-width: min(320px, 100%); background: #000; border-radius: 8px; }
+.room .embed iframe { display: block; width: min(1200px, 92vw); max-height: 80vh; aspect-ratio: 16 / 9; border: 0; border-radius: 8px; background: #000; }
 .room .close { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
 .room .cap .pbtn { padding: 4px 10px; font-size: 12px; margin-left: 8px; }
 .room .cap .pbtn[disabled] { opacity: .35; cursor: default; }
@@ -274,7 +352,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
   <div class="wrap">
     <a class="mark" href="#top"><i aria-hidden="true"></i>NELSON PREMDOSS</a>
     <nav class="nav" aria-label="Sections">
-      <a href="#reels">Showreels</a><a href="#brandwork">Brand work</a><a href="#ai">AI films</a><a href="#saas">SaaS</a><a href="#explainers">Explainers</a><a href="#claude">Built with Claude</a><a href="#services">Services</a><a href="#tools">Tools</a>
+      <a href="#reels">Showreels</a><a href="#fintech">Fintech</a><a href="#ai">AI films</a><a href="#build">How I build</a><a href="#finishing">Finishing</a><a href="#saas">SaaS</a><a href="#brandwork">Brand work</a><a href="#explainers">Explainers</a><a href="#claude">Built with Claude</a><a href="#services">Services</a><a href="#tools">Tools</a>
     </nav>
     <a class="btn primary hire" href="#contact">Contact me</a>
   </div>
@@ -286,9 +364,9 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
     <div class="wrap">
       <div class="slate"><span>Scene <b>01</b></span><span>Take <b>01</b></span><span>Roll <b>Portfolio</b></span><span>TC <b id="clock">00:00:00:00</b></span></div>
       <h1>Nelson Premdoss<span>Video Editor <em>·</em> AI Filmmaker <em>·</em> Motion Graphics Artist</span></h1>
-      <p class="lede">I edit, animate and generate video for explainers, SaaS launches and short-form. Fullscreen motion graphics for long-form YouTube science explainers, cinematic AI sequences for documentary storytelling, and product animation for SaaS brands.</p>
+      <p class="lede">I edit, animate and generate video for fintech and consumer brands: short-form reels, product and UI animation, and cinematic AI sequences. I own the whole chain, from AI storyboards to the final grade and mix.</p>
       <ul class="facts-row" aria-label="About">
-        <li><b>Senior Creative Engineer</b></li><li>3 years' experience</li><li>Bengaluru, India</li><li>Open to full-time, on-site roles</li>
+        <li><b>Senior Creative Engineer</b></li><li><b>Contributed to 150M+ views</b></li><li>3 years' experience</li><li>Bengaluru, India</li><li>Open to full-time, on-site or hybrid roles</li>
       </ul>
       <div class="cta">
         <button class="btn primary" data-play="motion"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg>Play motion reel</button>
@@ -312,30 +390,56 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
     </div>
   </section>
 
-  <section class="track" id="brandwork">
+  <section class="track" id="fintech">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:01:30:00</span><h2>Brand Work</h2><p>Short-form reels, motion graphics, AI animation and brand films. Click a brand to see every piece; previews play on their own.</p></div>
-      <div class="folders" id="folderList"></div>
+      <div class="track-head"><span class="tc">00:02:00:00</span><h2>Fintech &amp; Short-form</h2><p>Short-form for Markets by Zerodha: finance topics cut for the first three seconds, with motion graphics, AI animation, grade and sound done in-house.</p></div>
+      <div class="pv-grid ft-grid" id="fintechList"></div>
     </div>
   </section>
 
   <section class="track" id="ai">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:02:00:00</span><h2>AI Films</h2><p>Cinematic AI sequences generated, edited and graded into documentary-style explainers. Each one plays with its original sound.</p></div>
+      <div class="track-head"><span class="tc">00:03:00:00</span><h2>AI Films</h2><p>Cinematic AI sequences generated, edited and graded into documentary-style explainers. Each one plays with its original sound.</p></div>
       <div class="grid3" id="aiList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="build" data-show="1">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:04:00:00</span><h2>How I Build It</h2><p id="buildIntro">One project from brief to final mix: the AI storyboard, the generated assets, and the edit, grade and sound that finish it.</p></div>
+      <div class="pipe-top" id="buildTop"></div>
+      <ol class="pipe" id="pipeList"></ol>
+      <div class="pipe-break" id="pipeBreak"></div>
+    </div>
+  </section>
+
+  <section class="track" id="finishing" data-show="1">
+    <div class="wrap fin">
+      <div class="track-head"><span class="tc">00:05:00:00</span><h2>Finishing</h2><p>Colour, sound, graphics and delivery: the last 10% that decides whether a piece looks finished.</p></div>
+      <div class="fin-block" id="finColour"><h3 class="sub-h">Colour &amp; compositing</h3><p class="sub-p">Drag the handle, or focus it and use the arrow keys, to compare the raw frame with the final.</p><div class="ba-grid" id="baList"></div></div>
+      <div class="fin-block" id="finSound"><h3 class="sub-h">Sound</h3><p class="sub-p">Press play, then switch between Raw and Mixed. Both play at the same loudness, so you hear the mix, not the volume.</p><div class="snd-grid" id="sndList"></div></div>
+      <div class="fin-block" id="finGfx"><h3 class="sub-h">Graphics I build myself</h3><p class="sub-p">Icons, overlays, lower thirds and layouts made in Illustrator and Photoshop.</p><div class="gfx" id="gfxList"></div></div>
+      <div class="fin-block" id="finFormats"><h3 class="sub-h">One cut, every format</h3><p class="sub-p" id="fmtTitle"></p><div class="fmt" id="fmtList"></div></div>
     </div>
   </section>
 
   <section class="track" id="saas">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:03:00:00</span><h2>SaaS Animation</h2><p>Product launch and feature films for Mailmodo: UI animation, kinetic type and pacing built for a landing page or a social feed.</p></div>
+      <div class="track-head"><span class="tc">00:06:00:00</span><h2>SaaS Animation</h2><p>Product launch and feature films for Mailmodo: UI animation, kinetic type and pacing built for a landing page or a social feed.</p></div>
       <div class="grid2" id="saasList"></div>
+    </div>
+  </section>
+
+  <section class="track" id="brandwork">
+    <div class="wrap">
+      <div class="track-head"><span class="tc">00:07:00:00</span><h2>Brand Work</h2><p>Short-form reels, motion graphics, AI animation and brand films. Click a brand to see every piece; previews play on their own.</p></div>
+      <div class="folders" id="folderList"></div>
     </div>
   </section>
 
   <section class="track" id="explainers">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:04:00:00</span><h2>Explainer Videos</h2><p>Long-form science explainers for The Third Idiot by ALLEN Online, with fullscreen animation and AI sequences throughout. Each card opens the video on YouTube, starting where the animation begins where possible.</p></div>
+      <div class="track-head"><span class="tc">00:08:00:00</span><h2>Explainer Videos</h2><p>Long-form science explainers for The Third Idiot by ALLEN Online, with fullscreen animation and AI sequences throughout. Each card plays the full video here, starting where the animation begins where possible.</p></div>
       <div class="ex-grid" id="exList"></div>
     </div>
   </section>
@@ -343,7 +447,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
   <section class="track signature" id="claude">
     <div class="wrap">
       <div class="sig-top">
-        <span class="tc">00:04:30:00</span>
+        <span class="tc">00:09:00:00</span>
         <span class="badge">Signature skill</span>
       </div>
       <h2 class="sig-h">Longform Videos <em>Built with Claude</em></h2>
@@ -366,21 +470,21 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
   <section class="track" id="services">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:06:00:00</span><h2>What I Do</h2><p>From the first assembly to the final mix, as one person or as part of your team.</p></div>
+      <div class="track-head"><span class="tc">00:10:00:00</span><h2>What I Do</h2><p>From the first assembly to the final mix, as one person or as part of your team.</p></div>
       <div class="edl" id="svcList"></div>
     </div>
   </section>
 
   <section class="track" id="tools">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:07:00:00</span><h2>Toolkit</h2><p>Adobe for the edit and the motion work, plus the current generation of AI video, image and audio tools.</p></div>
+      <div class="track-head"><span class="tc">00:11:00:00</span><h2>Toolkit</h2><p>Adobe for the edit and the motion work, plus the current generation of AI video, image and audio tools.</p></div>
       <div class="tools" id="toolList"></div>
     </div>
   </section>
 
   <section class="track" id="contact">
     <div class="wrap contact">
-      <span class="tc">00:08:00:00</span>
+      <span class="tc">00:12:00:00</span>
       <h2>Let's cut something</h2>
       <div class="links" id="contactList"></div>
     </div>
@@ -401,133 +505,12 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
 <div class="room" id="room" hidden role="dialog" aria-modal="true" aria-label="Video player">
   <button class="btn close" id="roomClose">Close</button>
-  <div><video id="roomVideo" controls playsinline></video><div class="cap" id="roomCap"></div></div>
+  <div class="room-stage"><video id="roomVideo" controls playsinline></video><div class="embed" id="roomEmbed" hidden></div><div class="cap" id="roomCap"></div></div>
 </div>
 
+<script src="data.js"></script>
 <script>
-/* Everything on the page is rendered from this one object. Add brands, short-form links and contact links here. */
-const SITE = {
-  reels: [
-    { id: "motion", title: "Motion Design Reel", src: "media/motion-reel.mp4", poster: "media/motion-reel.jpg", dur: "1:06",
-      text: "Fullscreen 2D animation from long-form science explainers: orbits and spacetime, deep-sea creatures, dice physics, circuits and wind towers.",
-      meta: ["After Effects", "Explainer animation"],
-      credit: { role: "Motion graphics, concept and storyboard, editing", tools: "After Effects" } },
-    { id: "ai", title: "AI Video Reel", src: "media/ai-reel.mp4", poster: "media/ai-reel.jpg", dur: "0:59",
-      text: "Cinematic AI sequences from documentary explainers: a night-time truck crash, an 18th-century Paris theatre, hospital wards, anime-style study scenes and 3D medical shots.",
-      meta: ["AI video", "Edit and grade"],
-      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "GPT Image 2, Kling 3.0, Seedance 2.0" } },
-  ],
-  claude: {
-    reel: { title: "Built with Claude: animation reel", src: "media/claude-reel.mp4", poster: "media/claude-reel.jpg", dur: "0:40",
-      credit: { tools: "Claude Opus 5.5, Premiere Pro", note: "1-day turnaround" } },
-    films: [
-      { title: "Wavelengths", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation, Color grading, Sound design" }, src: "media/full/wavelengths/p0.mp4", parts: 5, poster: "media/claude-wavelengths.jpg", dur: "7:24",
-        text: "The electromagnetic spectrum: waves that tighten as energy rises, choreographed to the narration." },
-      { title: "Boiling Point", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation, Color grading, Sound design" }, src: "media/full/boiling/p0.mp4", parts: 6, poster: "media/claude-boiling.jpg", dur: "6:11", yt: "https://www.youtube.com/watch?v=uuwJrVgSk8E", ytTitle: "Earth vs Mars: Who Cooks Faster",
-        text: "Why water boils at 88 °C on a mountain: pressure, altitude and temperature in one evolving diagram." },
-      { title: "EOS Satellite", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation" }, src: "media/full/eos/p0.mp4", parts: 6, poster: "media/claude-eos.jpg", dur: "9:41", yt: "https://www.youtube.com/watch?v=16ffenU2fWA", ytTitle: "Everything You Know About Satellites Is Wrong",
-        text: "Geosynchronous orbit explained with a rotating Earth, orbit dials and a satellite that holds its position." },
-    ],
-  },
-  ai: [
-    { title: "The Coma Patient: opening", src: "media/ai-coma-opener.mp4", poster: "media/ai-coma-opener.jpg", dur: "0:21",
-      text: "A stormy night, a truck on a bridge, the crash. The cold open of a documentary about a coma patient.", yt: "https://www.youtube.com/watch?v=mmwBrd79oBo",
-      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "Seedance 2.0 (multi-shot)" } },
-    { title: "Paris theatre sequence", src: "media/ai-paris.mp4", poster: "media/ai-paris.jpg", dur: "0:52",
-      text: "A candle-lit period theatre built entirely with AI for the history section of a projector explainer.", yt: "https://www.youtube.com/watch?v=EeDseEqFaKo&t=18s",
-      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "Nano Banana Pro, Kling 3.0" } },
-    { title: "Speed and the city", src: "media/ai-car-sequence.mp4", poster: "media/ai-car-sequence.jpg", dur: "0:10",
-      text: "An illustrated driving sequence cut on the speedometer, from an explainer on how to study maths.", yt: "https://www.youtube.com/watch?v=nUzUT_vVMxc&t=223s",
-      credit: { role: "Concept and storyboard, script and direction, AI generation", tools: "GPT Image 2, Kling 3.0" } },
-  ],
-  saas: [
-    { title: "Mailmodo: The Marketing Stream", src: "media/saas-marketing-stream.mp4", poster: "media/saas-marketing-stream.jpg", dur: "1:03",
-      text: "Launch film for a free library of marketing webinars, podcasts and expert talks.", yt: "https://www.youtube.com/watch?v=qIq0f-LQdT8",
-      credit: { role: "Motion graphics, editing", tools: "After Effects" } },
-    { title: "Mailmodo: AI Email Campaign Planner", src: "media/saas-ai-planner.mp4", poster: "media/saas-ai-planner.jpg", dur: "0:33",
-      text: "Feature film for an AI tool that turns a website URL into a ready-to-use email strategy.", yt: "https://www.youtube.com/watch?v=SfW0BoywqFY",
-      credit: { role: "Editing, motion graphics", tools: "After Effects" } },
-  ],
-  /* `t` (seconds) deep-links to where the animation starts; left out where the YouTube upload's timing isn't confirmed */
-  explainers: [
-    { title: "I Made a Projector With Just ₹100", thumb: "media/thumb-projector.jpg", pv: "ex-projector", id: "EeDseEqFaKo", role: "Concept and storyboard, Editing, Motion graphics, AI generation", t: 18, tag: "AI + motion" },
-    { title: "The Coma Patient Who Could Hear Everything", thumb: "media/thumb-coma.jpg", pv: "ex-coma", id: "mmwBrd79oBo", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "AI film" },
-    { title: "Stop Solving More Sums. Do This Instead.", thumb: "media/thumb-sums.jpg", pv: "ex-sums", id: "nUzUT_vVMxc", role: "Concept and storyboard, Editing, Motion graphics, AI generation", t: 171, tag: "AI + motion" },
-    { title: "What If We Lost the Sun Today?", thumb: "media/thumb-gravity.jpg", pv: "ex-gravity", id: "Hs0qir_VCH8", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "Motion + AI" },
-    { title: "3 Formulas That Built Modern Civilization", thumb: "media/thumb-pythagoras.jpg", pv: "ex-pythagoras", id: "FUX_a0FTZTY", role: "Concept and storyboard, Editing, Motion graphics, AI generation", t: 103, tag: "Motion" },
-    { title: "Can You Actually Hack the Dice?", thumb: "media/thumb-dice.jpg", pv: "ex-dice", id: "trREQZaVkFs", role: "Concept and storyboard, Editing, Motion graphics", tag: "Motion" },
-    { title: "What's Hiding in the Deepest Parts of the Ocean?", thumb: "media/thumb-submarine.jpg", pv: "ex-ocean", id: "jdJEH0iRPjs", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "Motion" },
-    { title: "Can a ₹50 DIY AC Beat a ₹50,000 AC?", thumb: "media/thumb-zero-ac.jpg", pv: "ex-ac", id: "LctWvA1e1dU", role: "Concept and storyboard, Editing, Motion graphics, AI generation", tag: "Motion" },
-  ],
-  services: [
-    ["Explainer videos", "Long-form YouTube explainers from script to final cut: pacing, fullscreen animation, b-roll and on-screen type that keep a 10-minute topic moving."],
-    ["SaaS and product animation", "Launch films and feature walkthroughs built from your UI: animated screens, kinetic type and a clear story about what the product does."],
-    ["AI video production", "Cinematic AI sequences for stories that can't be filmed: historical scenes, recreations and concept shots, generated, edited and graded to sit inside live footage."],
-    ["Motion graphics", "2D and 2.5D animation, diagrams, data and title design in After Effects."],
-    ["Short-form editing", "Reels, Shorts and TikTok edits with hooks, captions, sound design and pacing for the first three seconds."],
-    ["Trailer editing", "Trailers and teasers that build tension through structure, music and sound."],
-    ["Color grading", "Consistent looks across mixed sources, from camera footage to AI-generated shots."],
-    ["Sound design", "SFX, music edits and mixes that make motion graphics and AI sequences feel physical."],
-  ],
-  tools: [
-    { name: "Edit and motion", adobe: true, items: ["Adobe Premiere Pro", "Adobe After Effects", "Adobe Photoshop"] },
-    { name: "AI video", items: ["Kling 3.0", "Seedance 2.0", "Runway", "Higgsfield"] },
-    { name: "AI image and animation", items: ["GPT Image 2", "Nano Banana Pro", "Magnific AI", "Claude Opus 5.5"] },
-  ],
-
-  /* Brand work: one folder per brand. Previews are short silent loops; `url` links to the original post (omit it for unpublished work). */
-  brandwork: [
-    { brand: "Markets by Zerodha", logo: "logos/zerodha.svg", cover: "markets-rupee", items: [
-      { type: "AI animation", title: "Why the rupee keeps falling", media: "markets-rupee", v: true, role: "Concept and storyboard, Editing, AI generation, Sound design" },
-      { type: "Motion graphics", title: "Milky Mist IPO", media: "markets-milkymist", v: true, role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-      { type: "Short-form", title: "IPO investing pitfalls", media: "markets-ipo", v: true, url: "https://www.instagram.com/reel/DJEHeleAX4W/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-      { type: "Short-form", title: "Is the transformer business ready to explode?", media: "markets-transformers", v: true, url: "https://www.instagram.com/reel/DUsTIQ9D0OF/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-      { type: "Short-form", title: "The De Beers diamond myth", media: "markets-diamonds", v: true, url: "https://www.instagram.com/reel/DNiOHZzvXTS/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-      { type: "Short-form", title: "India's UPI revolution", media: "markets-upi", v: true, url: "https://www.instagram.com/reel/DMuqcxUvi_z/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-      { type: "Short-form", title: "Women on the night shift", media: "markets-night-shift", v: true, url: "https://www.instagram.com/reel/DOLpeR_j2Tm/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-      { type: "Short-form", title: "The attack of the zombie firms", media: "markets-zombie", v: true, url: "https://www.instagram.com/reel/DOIrtvCDxIY/", role: "Concept and storyboard, Editing, Motion graphics, Color grading, Sound design" },
-    ] },
-    { brand: "Coca-Cola", sub: "Charged", logo: "logos/coca-cola.svg", cover: "charged-1", items: [
-      { type: "Short-form", title: "Street vox pop", media: "charged-1", v: true, url: "https://www.instagram.com/reel/DaCLdXyxWlO/", role: "Concept and storyboard, Editing, AI generation" },
-      { type: "Short-form", title: "Street vox pop, part two", media: "charged-2", v: true, url: "https://www.instagram.com/reel/DXY3SJYjY22/", role: "Concept and storyboard, Editing, AI generation" },
-    ] },
-    { brand: "Lumio", logo: "logos/lumio.svg", cover: "lumio-aura", items: [
-      { type: "Brand film", title: "Lumio Aura 5: HiFi Sound, Bar None", media: "lumio-aura", url: "https://www.youtube.com/watch?v=X2QHRhWtY-I", role: "Concept and storyboard, Editing, Motion graphics" },
-    ] },
-    { brand: "Zoho", sub: "Builders Central", logo: "logos/zoho.svg", cover: "zoho-builders", items: [
-      { type: "Brand film", title: "SaaS Is Dead. Build This Instead.", media: "zoho-builders", url: "https://www.youtube.com/watch?v=NVPWYTZZpnI", role: "Concept and storyboard, Editing, Motion graphics" },
-    ] },
-    { brand: "Royal Challengers Bengaluru", sub: "RCB Kannada", logo: "logos/rcb.png", tall: true, cover: "rcb-podcast", items: [
-      { type: "Podcast edit", title: "bigbasket now Podcast with Virat Kohli", media: "rcb-podcast", v: true, url: "https://www.instagram.com/reel/DEUfF5lS4mP/" },
-      { type: "Feature video", title: "Inside the RCB auction table", media: "rcb-feature", url: "https://www.instagram.com/reel/DDCdBJSMygf/" },
-    ] },
-    { brand: "Vi", logo: "logos/vi.svg", cover: "vi-score", items: [
-      { type: "Short-form", title: "Vi Score review reel", media: "vi-score", v: true, url: "https://www.instagram.com/reel/DT8Aun7kjVV/" },
-    ] },
-  ],
-  /* Logo wall, in this order. Put a logo file at logos/<slug>.svg or .png and set `logo`; without one the brand name is shown. */
-  brands: [
-    { name: "Zerodha", slug: "zerodha", logo: "logos/zerodha.svg" },
-    { name: "Coca-Cola", slug: "coca-cola", logo: "logos/coca-cola.svg" },
-    { name: "ALLEN", slug: "allen", logo: "logos/allen.svg", note: "The Third Idiot YouTube channel", links: [{ label: "Channel", url: "https://www.youtube.com/@thethirdidiot" }] },
-    { name: "RCB", slug: "rcb", logo: "logos/rcb.png", tall: true },
-    { name: "Nothing", also: true, slug: "nothing", logo: "logos/nothing.svg" },
-    { name: "Zoho", slug: "zoho", logo: "logos/zoho.svg", size: "mid" },
-    { name: "Cleartrip", also: true, slug: "cleartrip", logo: "logos/cleartrip.svg" },
-    { name: "Licious", also: true, slug: "licious", logo: "logos/licious.png", size: "mid" },
-    { name: "Peakst8", also: true, slug: "peakst8", logo: "logos/peakst8.svg" },
-    { name: "Vi", slug: "vi", logo: "logos/vi.svg", size: "mid" },
-    { name: "Lumio", slug: "lumio", logo: "logos/lumio.svg" },
-    { name: "Mailmodo", slug: "mailmodo", logo: "logos/mailmodo.svg", note: "SaaS launch and feature animation" },
-  ],
-  /* type "copy" shows the value as text with a Copy button; type "link" opens a site */
-  contact: [
-    { type: "copy", label: "Email", value: "nelsonpremdoss.e@gmail.com" },
-    { type: "copy", label: "Phone / WhatsApp", value: "+91 99943 17417" },
-    { type: "link", label: "LinkedIn", value: "in/nelson-premdoss-e", url: "https://www.linkedin.com/in/nelson-premdoss-e-5a8a0b144" },
-  ],
-};
-
+/* Everything on the page is rendered from SITE, defined in data.js. */
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 /* silent preview loop for every full video (keyed by the full video's file); click opens the full video with sound */
@@ -535,31 +518,49 @@ const PV = { "media/motion-reel.mp4": "motion-reel", "media/ai-reel.mp4": "ai-re
   "media/ai-coma-opener.mp4": "ai-coma", "media/ai-paris.mp4": "ai-paris", "media/ai-car-sequence.mp4": "ai-car",
   "media/saas-marketing-stream.mp4": "saas-stream", "media/saas-ai-planner.mp4": "saas-planner",
   "media/full/wavelengths/p0.mp4": "claude-wavelengths", "media/full/boiling/p0.mp4": "claude-boiling", "media/full/eos/p0.mp4": "claude-eos" };
-const preview = (name, poster) => `<video class="pvloop" src="media/pv/${name}.mp4" poster="${esc(poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`;
+const preview = (name, poster) => lazyLoop(`media/pv/${name}.mp4`, poster);
+/* silent looping preview, loaded only when scrolled near (see the IntersectionObserver below) */
+const lazyLoop = (src, poster) => `<video class="pvloop" src="${esc(src)}"${filled(poster) ? ` poster="${esc(poster)}"` : ""} muted loop playsinline preload="none" aria-hidden="true"></video>`;
 const screen = (v, key) => `<button class="screen" data-src="${esc(v.src)}" data-cap="${esc(v.title)}" ${v.parts ? `data-parts="${v.parts}"` : ""} ${key ? `data-key="${key}"` : ""} aria-label="Play ${esc(v.title)} with sound">
-  ${PV[v.src] ? preview(PV[v.src], v.poster) : `<img src="${esc(v.poster)}" alt="" loading="lazy">`}<span class="dur">${esc(v.dur)}</span><span class="play"><i aria-hidden="true"></i>Play</span></button>`;
-const credit = (c) => c ? `<p class="credit">${c.role ? `<span><b>My role</b>${esc(c.role)}</span>` : ""}${c.tools ? `<span><b>Tools</b>${esc(c.tools)}</span>` : ""}${c.note ? `<span><b>Turnaround</b>${esc(c.note.replace(/ turnaround$/i, ""))}</span>` : ""}</p>` : "";
-const ytLink = (u, t = "Watch on YouTube") => u ? `<a class="yt" href="${esc(u)}" target="_blank" rel="noopener">${t} ↗</a>` : "";
+  ${PV[v.src] ? preview(PV[v.src], v.poster) : filled(v.preview) ? lazyLoop(v.preview, v.poster) : `<img src="${esc(v.poster)}" alt="" loading="lazy">`}<span class="dur">${esc(v.dur)}</span><span class="play"><i aria-hidden="true"></i>Play</span></button>`;
+/* placeholders: a value is "filled" when it is set and doesn't start with "TODO:". Unfilled values render only in draft view. */
+const DRAFT = SITE.showPlaceholders === true || (SITE.showPlaceholders === "auto" && !/[?&]live\b/.test(location.search) &&
+  (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || /[?&]draft\b/.test(location.search)));   /* ?live previews the public view on localhost */
+const filled = (v) => typeof v === "string" ? v.trim() !== "" && !/^TODO:/.test(v.trim()) : v != null;
+const todo = (text, cls = "") => DRAFT && text ? `<div class="todo ${cls}">${esc(text)}</div>` : "";
+const line = (label, v) => filled(v) ? `<span><b>${label}</b>${esc(v)}</span>` : DRAFT && v ? `<span class="todo-line"><b>${label}</b>${esc(v)}</span>` : "";
+/* the MY ROLE / TOOLS block shared by every card; HOOK, TURNAROUND and RESULTS hide when empty */
+const credit = (c) => {
+  if (!c) return "";
+  const body = line("Hook", c.hook) + line("My role", c.role) + line("Tools", c.tools) + (DRAFT && c.toolsNote ? `<span class="todo-line"><b>Note</b>${esc(c.toolsNote)}</span>` : "")
+    + line("Turnaround", c.turnaround || (c.note && c.note.replace(/ turnaround$/i, ""))) + line("Results", c.results);
+  return body ? `<p class="credit">${body}</p>` : "";
+};
+const ytLink = (u, t = "Watch on YouTube") => u ? `<a class="yt" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${t} ↗</a>` : "";
 
 $("reelList").innerHTML = SITE.reels.map((r) => `<article class="reel">${screen(r, r.id)}<div class="meta">${r.meta.map((m) => `<b>${esc(m)}</b>`).join("")}<span>${r.dur}</span></div><h3>${esc(r.title)}</h3><p>${esc(r.text)}</p>${credit(r.credit)}</article>`).join("");
 $("claudeReel").innerHTML = `${screen(SITE.claude.reel)}<div class="meta"><b>Claude Opus</b><b>Premiere Pro</b><span>${SITE.claude.reel.dur}</span></div>${credit(SITE.claude.reel.credit)}`;
-$("claudeList").innerHTML = SITE.claude.films.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)} <small class="full">Full video</small></h3><p>${esc(v.text)}</p>${credit(v.credit)}${v.yt ? ytLink(v.yt, "On YouTube: " + esc(v.ytTitle)) : `<span class="muted-note">Not yet published on YouTube</span>`}</article>`).join("");
-$("aiList").innerHTML = SITE.ai.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}${ytLink(v.yt, "Full video on YouTube")}</article>`).join("");
-$("saasList").innerHTML = SITE.saas.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}${ytLink(v.yt)}</article>`).join("");
-$("exList").innerHTML = SITE.explainers.map((e) => `<a class="ex" href="https://www.youtube.com/watch?v=${esc(e.id)}${e.t ? "&t=" + e.t + "s" : ""}" target="_blank" rel="noopener"><div class="thumb">${e.pv ? preview(e.pv, e.thumb) : `<img src="${esc(e.thumb)}" alt="" loading="lazy">`}</div><small>${esc(e.tag)}</small><span>${esc(e.title)}</span><em class="ex-role">${esc(e.role || "")}</em></a>`).join("");
+$("claudeList").innerHTML = SITE.claude.films.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)} <small class="full">Full video</small></h3><p>${esc(v.text)}</p>${credit(v.credit)}</article>`).join("");
+$("aiList").innerHTML = SITE.ai.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}</article>`).join("");
+$("saasList").innerHTML = SITE.saas.map((v) => `<article class="card">${screen(v)}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p>${credit(v.credit)}</article>`).join("");
+$("exList").innerHTML = SITE.explainers.map((e) => `<button class="ex" data-src="yt:${esc(e.id)}@${e.t || 0}" data-cap="${esc(e.title)}" aria-label="Play ${esc(e.title)} with sound"><div class="thumb">${e.pv ? preview(e.pv, e.thumb) : `<img src="${esc(e.thumb)}" alt="" loading="lazy">`}</div><small>${esc(e.tag)}</small><span>${esc(e.title)}</span><em class="ex-role">${esc(e.role || "")}</em>${filled(e.turnaround) ? `<span class="ex-ta"><b>Turnaround</b>${esc(e.turnaround)}</span>` : ""}</button>`).join("");
 $("svcList").innerHTML = SITE.services.map(([h, p], i) => `<div><span class="n">${String(i + 1).padStart(2, "0")}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("");
-$("toolList").innerHTML = SITE.tools.map((t) => `<div class="toolset"><h3>${esc(t.name)}</h3><ul class="chips${t.adobe ? " adobe" : ""}">${t.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
-const brandCard = (b) => `<div class="brand"><b>${esc(b.name || b.brand)}</b><span>${esc(b.note || "")}</span>${(b.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}</div>`;
+$("toolList").innerHTML = SITE.tools.map((t) => {
+  const items = t.items.filter((i) => typeof i === "string" || DRAFT);
+  if (!items.length) return "";
+  return `<div class="toolset"><h3>${esc(t.name)}</h3><ul class="chips${t.adobe ? " adobe" : ""}">${items.map((i) => typeof i === "string" ? `<li>${esc(i)}</li>` : `<li class="todo-chip" title="${esc(i.todo)}">${esc(i.name)} <small>${esc(i.todo)}</small></li>`).join("")}</ul></div>`;
+}).join("");
+const brandCard = (b) => `<div class="brand"><b>${esc(b.name || b.brand)}</b><span>${esc(b.note || "")}</span>${(b.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} ↗</a>`).join("")}</div>`;
 const logoHTML = (b) => {
   const inner = b.logo ? `<img src="${esc(b.logo)}" alt="${esc(b.name)}" loading="lazy"${b.tall ? ' class="tall"' : b.size ? ` class="${b.size}"` : ""}>` : `<span class="word">${esc(b.name)}</span>`;
   const tip = b.note ? ` title="${esc(b.note)}"` : "";
-  const link = b.links && b.links[0];
-  return link ? `<a class="logo" href="${esc(link.url)}" target="_blank" rel="noopener"${tip}>${inner}</a>` : `<div class="logo"${tip}>${inner}</div>`;
+  const link = (b.links || []).find((l) => !/youtube\.com|youtu\.be|instagram\.com/.test(l.url));   /* YouTube / Instagram links stay in the data but aren't shown */
+  return link ? `<a class="logo" href="${esc(link.url)}" target="_blank" rel="noopener noreferrer"${tip}>${inner}</a>` : `<div class="logo"${tip}>${inner}</div>`;
 };
 $("brandList").innerHTML = SITE.brands.filter((b) => !b.also).map(logoHTML).join("")
   + `<span class="also-group"><span class="also-label">Also worked with</span>` + SITE.brands.filter((b) => b.also).map((b) => logoHTML(b).replace('class="logo"', 'class="logo also"')).join("") + `</span>`;
 $("contactList").innerHTML = SITE.contact.map((c) => c.type === "link"
-  ? `<a class="ct" href="${esc(c.url)}" target="_blank" rel="noopener"><small>${esc(c.label)}</small><span>${esc(c.value)}</span><em>Open ↗</em></a>`
+  ? `<a class="ct" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer"><small>${esc(c.label)}</small><span>${esc(c.value)}</span><em>Open ↗</em></a>`
   : `<div class="ct"><small>${esc(c.label)}</small><span class="val">${esc(c.value)}</span><button class="copy" data-copy="${esc(c.value)}">Copy</button></div>`).join("");
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("button.copy"); if (!b) return;
@@ -577,16 +578,113 @@ $("folderList").innerHTML = SITE.brandwork.map((b, i) => `<button class="folder"
   <span class="f-meta"><img src="${esc(b.logo)}" alt=""><span><b>${esc(b.brand)}</b>${b.sub ? `<small>${esc(b.sub)}</small>` : ""}</span><em>${b.items.length}</em></span>
   <span class="f-tally">${esc(tally(b.items))}</span>
   <span class="f-open">${b.items.length > 1 ? `View all ${b.items.length} pieces` : "View the piece"} <i aria-hidden="true">→</i></span></button>`).join("");
+/* one brand piece: preview, type chip, title, credit lines and the link to the post */
+function pieceHTML(it, media) {
+  const play = filled(it.full)
+    ? `<button class="screen" data-src="${esc(it.full)}" data-cap="${esc(it.title)}" aria-label="Play ${esc(it.title)} with sound">${media}${filled(it.dur) ? `<span class="dur">${esc(it.dur)}</span>` : ""}<span class="play"><i aria-hidden="true"></i>Play</span></button>`
+    : media;
+  return `<article class="pv ${it.v ? "v" : "h"}">
+    <div class="pv-media">${play}</div>
+    <span class="chip">${esc(it.type)}</span><h4>${esc(it.title)}</h4>
+    ${credit({ hook: it.hook, role: it.role, tools: it.tools, turnaround: it.turnaround, results: it.results })}
+  </article>`;
+}
+
+/* FINTECH & SHORT-FORM: the Zerodha pieces in SITE.fintech.order, as visible cards */
+(function renderFintech() {
+  const all = SITE.brandwork.flatMap((b) => b.items);
+  const pieces = SITE.fintech.order.map((m) => all.find((it) => it.media === m)).filter(Boolean);
+  $("fintechList").innerHTML = pieces.map((it) => pieceHTML(it, lazyLoop(M(it.media, "mp4"), M(it.media, "jpg")))).join("");
+})();
+
+/* HOW I BUILD IT: five-step pipeline, a breakdown video and the turnaround */
+(function renderPipeline() {
+  const P = SITE.pipeline;
+  const mediaOf = (src, poster) => !filled(src) ? todo(src, "ph-w") : /\.mp4$/i.test(src) ? lazyLoop(src, poster) : `<img src="${esc(src)}" alt="" loading="lazy">`;
+  const ready = P.steps.every((st) => filled(st.media));
+  $("build").dataset.show = ready || DRAFT ? "1" : "";
+  $("buildTop").innerHTML = (filled(P.project) ? `<h3 class="sub-h">${esc(P.project)}</h3>` : todo(P.project)) + credit({ turnaround: P.turnaround });
+  $("pipeList").innerHTML = P.steps.map((st, i) => `<li class="pipe-step">
+    <div class="pipe-media">${mediaOf(st.media)}</div>
+    <span class="n">${String(i + 1).padStart(2, "0")}</span><h3>${esc(st.name)}</h3>
+    ${credit({ tools: st.tools })}${filled(st.text) ? `<p>${esc(st.text)}</p>` : todo(st.text)}</li>`).join("");
+  const br = P.breakdown;
+  $("pipeBreak").innerHTML = filled(br.src)
+    ? `<article class="card">${screen(br)}<h3>${esc(br.title)}</h3>${filled(br.text) ? `<p>${esc(br.text)}</p>` : todo(br.text)}</article>`
+    : DRAFT ? `<article class="card">${todo(br.src, "ph-w")}<h3>${esc(br.title)}</h3>${todo(br.text)}</article>` : "";
+})();
+
+/* FINISHING: colour before/after, raw vs mixed sound, static graphics, one cut in every format */
+(function renderFinishing() {
+  const F = SITE.finishing;
+  const imgOrTodo = (src, cls) => filled(src) ? `<img src="${esc(src)}" alt="" loading="lazy" class="${cls}">` : todo(src, "ph-w " + cls);
+  const grades = F.colour.filter((g) => DRAFT || (filled(g.before) && filled(g.after)));
+  $("baList").innerHTML = grades.map((g, i) => `<figure class="ba-wrap">
+    <div class="ba" style="--pos:50%">
+      ${imgOrTodo(g.after, "ba-after")}
+      <div class="ba-before">${imgOrTodo(g.before, "")}</div>
+      <span class="ba-line" aria-hidden="true"></span><span class="ba-tag l">Before</span><span class="ba-tag r">After</span>
+      <input type="range" min="0" max="100" value="50" step="1" aria-label="Compare before and after, example ${i + 1}">
+    </div>
+    <figcaption>${filled(g.caption) ? esc(g.caption) : todo(g.caption)}</figcaption></figure>`).join("");
+  $("finColour").hidden = !grades.length;
+
+  /* one player per sample with a Raw / Mixed switch that keeps the playhead, like the colour slider */
+  const sounds = F.sound.filter((x) => DRAFT || (filled(x.raw) && filled(x.mixed)));
+  $("sndList").innerHTML = sounds.map((x, i) => filled(x.raw) && filled(x.mixed) ? `<figure class="snd-card" data-raw="${esc(x.raw)}" data-mixed="${esc(x.mixed)}">
+      <div class="ab" role="group" aria-label="Choose raw or mixed audio, example ${i + 1}">
+        <button type="button" class="ab-btn" data-ab="raw" aria-pressed="false">Raw</button><button type="button" class="ab-btn" data-ab="mixed" aria-pressed="true">Mixed</button>
+      </div>
+      <audio controls preload="none" src="${esc(x.mixed)}"></audio>
+      <figcaption><b>${esc(x.title)}</b> ${filled(x.note) ? esc(x.note) : ""}</figcaption></figure>`
+    : `<figure class="snd-card">${todo(x.raw)}${todo(x.mixed)}<figcaption>${esc(x.title || "")}</figcaption></figure>`).join("");
+  $("finSound").hidden = !sounds.length;
+  $("sndList").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-ab]"); if (!btn) return;
+    const card = btn.closest(".snd-card"), au = card.querySelector("audio"), want = card.dataset[btn.dataset.ab];
+    card.querySelectorAll("[data-ab]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    if (au.getAttribute("src") === want) return;
+    const t = au.currentTime, playing = !au.paused;
+    au.src = want; au.addEventListener("loadedmetadata", () => { au.currentTime = Math.min(t, au.duration || t); if (playing) au.play().catch(() => {}); }, { once: true });
+    if (playing || t) au.load();
+  });
+  /* only one clip plays at a time */
+  $("sndList").addEventListener("play", (e) => document.querySelectorAll("#sndList audio").forEach((a) => a !== e.target && a.pause()), true);
+
+  const gfx = F.graphics.filter((g) => DRAFT || filled(g.img));
+  $("gfxList").innerHTML = gfx.map((g) => `<figure>${filled(g.img) ? `<img src="${esc(g.img)}" alt="${filled(g.caption) ? esc(g.caption) : ""}" loading="lazy">` : todo(g.img, "ph-sq")}
+    <figcaption>${filled(g.caption) ? esc(g.caption) : todo(g.caption)}</figcaption></figure>`).join("");
+  $("finGfx").hidden = !gfx.length;
+
+  const fm = F.formats, fmtReady = fm.cuts.every((c) => filled(c.src));
+  $("fmtTitle").innerHTML = filled(fm.title) ? esc(fm.title) : todo(fm.title);
+  $("fmtList").innerHTML = fmtReady || DRAFT ? fm.cuts.map((c) => `<figure class="fmt-cut r${c.ratio.replace(":", "x")}">
+    <div class="fmt-media">${filled(c.src) ? `<video controls playsinline preload="none" src="${esc(c.src)}"${filled(c.poster) ? ` poster="${esc(c.poster)}"` : ""}></video>` : todo(c.src, "ph-fill")}</div>
+    <figcaption><b>${esc(c.ratio)}</b> ${esc(c.platform)}</figcaption></figure>`).join("") : "";
+  $("finFormats").hidden = !(fmtReady || DRAFT);
+  $("finishing").dataset.show = [...document.querySelectorAll("#finishing .fin-block")].some((b) => !b.hidden) ? "1" : "";
+
+  /* before/after slider: the range input handles mouse, touch and arrow keys */
+  document.querySelectorAll(".ba input").forEach((r) => r.addEventListener("input", () => r.parentElement.style.setProperty("--pos", r.value + "%")));
+})();
+
+/* sections with nothing to show are hidden (with their nav link); timecodes then renumber in order */
+(function tidySections() {
+  document.querySelectorAll("section.track[data-show]").forEach((sec) => {
+    sec.hidden = !sec.dataset.show;
+    const a = document.querySelector(`.nav a[href="#${sec.id}"]`); if (a) a.hidden = sec.hidden;
+  });
+  [...document.querySelectorAll("section.track")].filter((sec) => !sec.hidden).forEach((sec, i) => {
+    const tc = sec.querySelector(".tc"); if (tc) tc.textContent = `00:${String(i + 1).padStart(2, "0")}:00:00`;
+  });
+})();
+
 const drawer = $("drawer");
 let drawerFocus = null;
 function openDrawer(i) {
   const b = SITE.brandwork[i]; drawerFocus = document.activeElement;
   $("drawerTitle").textContent = b.brand; $("drawerSub").textContent = (b.sub ? b.sub + " · " : "") + tally(b.items);
-  $("drawerGrid").innerHTML = b.items.map((it) => `<article class="pv ${it.v ? "v" : "h"}">
-    <div class="pv-media">${loop(it.media)}</div>
-    <span class="chip">${esc(it.type)}</span><h4>${esc(it.title)}</h4>
-    ${it.role ? `<p class="credit"><span><b>My role</b>${esc(it.role)}</span></p>` : ""}
-    ${it.url ? `<a class="yt" href="${esc(it.url)}" target="_blank" rel="noopener">${it.url.includes("youtube") ? "Watch on YouTube" : "View on Instagram"} ↗</a>` : `<span class="muted">Preview only</span>`}</article>`).join("");
+  $("drawerGrid").innerHTML = b.items.map((it) => pieceHTML(it, loop(it.media))).join("");
   drawer.hidden = false; document.body.style.overflow = "hidden"; $("drawerClose").focus();
 }
 function closeDrawer() { $("drawerGrid").innerHTML = ""; drawer.hidden = true; document.body.style.overflow = ""; if (drawerFocus) drawerFocus.focus(); }
@@ -620,15 +718,23 @@ function loadPart(i, autoplay = true) {
   if (autoplay) rv.play().catch(() => {});
 }
 rv.addEventListener("ended", () => { if (part < parts - 1) loadPart(part + 1); });
+/* "yt:<id>@<seconds>" plays through YouTube's embedded player, inside this player, with no link out */
 function openRoom(src, cap, n = 1) {
   lastFocus = document.activeElement;
-  partBase = src; partCap = cap; parts = n; room.hidden = false; $("roomClose").focus();
+  room.hidden = false; $("roomClose").focus();
+  const yt = /^yt:([\w-]{6,})(?:@(\d+))?/.exec(src);
+  rv.hidden = !!yt; $("roomEmbed").hidden = !yt;
+  if (yt) {
+    $("roomEmbed").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0&modestbranding=1&playsinline=1${yt[2] ? "&start=" + yt[2] : ""}" title="${esc(cap)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    $("roomCap").textContent = cap; return;
+  }
+  partBase = src; partCap = cap; parts = n;
   loadPart(0);
 }
-function closeRoom() { rv.pause(); rv.removeAttribute("src"); rv.load(); room.hidden = true; if (lastFocus) lastFocus.focus(); }
+function closeRoom() { rv.pause(); rv.removeAttribute("src"); rv.load(); $("roomEmbed").innerHTML = ""; room.hidden = true; if (lastFocus) lastFocus.focus(); }
 document.addEventListener("click", (e) => {
   const pb = e.target.closest("[data-part]"); if (pb) return loadPart(+pb.dataset.part);
-  const s = e.target.closest(".screen"); if (s) return openRoom(s.dataset.src, s.dataset.cap, +(s.dataset.parts || 1));
+  const s = e.target.closest(".screen, .ex[data-src]"); if (s) return openRoom(s.dataset.src, s.dataset.cap, +(s.dataset.parts || 1));
   const p = e.target.closest("[data-play]"); if (p) { const r = SITE.reels.find((x) => x.id === p.dataset.play); return openRoom(r.src, r.title); }
   if (e.target === room || e.target.id === "roomClose") closeRoom();
 });
