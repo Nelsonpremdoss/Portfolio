@@ -54,6 +54,14 @@ const SITE = {
       credit: { role: "Concept and storyboard, script and direction, AI generation",
         tools: "GPT Image 2, Kling 3.0", // TODO: add Higgsfield / Runway / Magnific / ElevenLabs here if used
         turnaround: "2 days" } },
+    /* AI sequences from the Built with Claude films */
+    { title: "Boiling Point: the Andes expedition", src: "media/ai-andes.mp4", poster: "media/ai-andes.jpg", dur: "0:48",
+      text: "An animated mountain expedition that tries to cook potatoes at altitude, setting up why water boils below 100 °C.", yt: "https://www.youtube.com/watch?v=uuwJrVgSk8E&t=16s",
+      credit: { role: "Concept and storyboard, Editing, AI generation, Color grading, Sound design",
+        tools: "TODO: AI tools used for this sequence" } },
+    { title: "Wavelengths: Herschel finds infrared", src: "media/ai-herschel.mp4", poster: "media/ai-herschel.jpg", dur: "0:31",
+      text: "William Herschel splits sunlight with a prism and finds heat beyond the red: a period recreation built shot by shot with AI.",
+      credit: { role: "Concept and storyboard, Editing, AI generation, Color grading, Sound design", tools: "Kling" } },
   ],
 
   /* HOW I BUILD IT: one project as a five-step pipeline. `media` is an image (.jpg/.png/.webp) or a short silent loop (.mp4). */
