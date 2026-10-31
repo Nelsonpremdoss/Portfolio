@@ -193,8 +193,8 @@ const SITE = {
       { type: "Short-form", title: "Street vox pop, part two", media: "charged-2", full: "media/brand/full/charged-2.mp4", dur: "1:21", v: true, url: "https://www.instagram.com/reel/DXY3SJYjY22/", role: "Concept and storyboard, Editing, AI generation, Color grading, Sound design",
         turnaround: "1 day" },
     ] },
-    { brand: "Lumio", logo: "logos/lumio.svg", cover: "lumio-aura", items: [
-      { type: "Brand film", title: "Lumio Aura 5: HiFi Sound, Bar None", media: "lumio-aura", full: "yt:X2QHRhWtY-I", dur: "8:59", url: "https://www.youtube.com/watch?v=X2QHRhWtY-I", role: "Concept and storyboard, Editing, Motion graphics" },
+    { brand: "Lumio", logo: "logos/lumio.svg", cover: "lumio-neo", items: [
+      { type: "Brand film", title: "Chat with your TV on WhatsApp? Lumio TLDR Neo", media: "lumio-neo", full: "yt:HxAALLEkPLU", dur: "3:51", url: "https://www.youtube.com/watch?v=HxAALLEkPLU", role: "Concept and storyboard, Editing, Motion graphics" },
     ] },
     { brand: "Zoho", sub: "Builders Central", logo: "logos/zoho.svg", cover: "zoho-builders", items: [
       { type: "Brand film", title: "SaaS Is Dead. Build This Instead.", media: "zoho-builders", full: "yt:NVPWYTZZpnI", dur: "7:47", url: "https://www.youtube.com/watch?v=NVPWYTZZpnI", role: "Concept and storyboard, Editing, Motion graphics" },
