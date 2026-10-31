@@ -8,11 +8,11 @@ const SITE = {
   showPlaceholders: "auto",
 
   reels: [
-    { id: "motion", title: "Motion Design Reel", src: "media/motion-reel.mp4", poster: "media/motion-reel.jpg", dur: "1:06",
+    { id: "motion", title: "Motion Design Reel", src: "media/motion-reel.mp4?v=2", poster: "media/motion-reel.jpg", dur: "1:06",
       text: "Fullscreen 2D animation from long-form science explainers: orbits and spacetime, deep-sea creatures, dice physics, circuits and wind towers.",
       meta: ["After Effects", "Explainer animation"],
       credit: { role: "Motion graphics, concept and storyboard, editing", tools: "After Effects" } },
-    { id: "ai", title: "AI Video Reel", src: "media/ai-reel.mp4", poster: "media/ai-reel.jpg", dur: "0:59",
+    { id: "ai", title: "AI Video Reel", src: "media/ai-reel.mp4?v=2", poster: "media/ai-reel.jpg", dur: "0:59",
       text: "Cinematic AI sequences from documentary explainers: a night-time truck crash, an 18th-century Paris theatre, hospital wards, anime-style study scenes and 3D medical shots.",
       meta: ["AI video", "Edit and grade"],
       credit: { role: "Concept and storyboard, script and direction, AI generation",
@@ -26,7 +26,7 @@ const SITE = {
   },
 
   claude: {
-    reel: { title: "Built with Claude: animation reel", src: "media/claude-reel.mp4", poster: "media/claude-reel.jpg", dur: "0:40",
+    reel: { title: "Built with Claude: animation reel", src: "media/claude-reel.mp4?v=2", poster: "media/claude-reel.jpg", dur: "0:40",
       credit: { tools: "Claude Opus 5.5, Premiere Pro", turnaround: "1-day" } },
     films: [
       { title: "Wavelengths", credit: { role: "Concept and storyboard, Editing, Motion graphics, AI generation, Color grading, Sound design" }, src: "media/full/wavelengths/p0.mp4", parts: 5, poster: "media/claude-wavelengths.jpg", dur: "7:24",
