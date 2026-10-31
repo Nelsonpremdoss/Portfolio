@@ -523,7 +523,7 @@ const preview = (name, poster) => lazyLoop(`media/pv/${name}.mp4`, poster);
 /* silent looping preview, loaded only when scrolled near (see the IntersectionObserver below) */
 const lazyLoop = (src, poster) => `<video class="pvloop" src="${esc(src)}"${filled(poster) ? ` poster="${esc(poster)}"` : ""} muted loop playsinline preload="none" aria-hidden="true"></video>`;
 const screen = (v, key) => `<button class="screen" data-src="${esc(v.src)}" data-cap="${esc(v.title)}" ${v.parts ? `data-parts="${v.parts}"` : ""} ${key ? `data-key="${key}"` : ""} aria-label="Play ${esc(v.title)} with sound">
-  ${PV[v.src] ? preview(PV[v.src], v.poster) : filled(v.preview) ? lazyLoop(v.preview, v.poster) : `<img src="${esc(v.poster)}" alt="" loading="lazy">`}<span class="dur">${esc(v.dur)}</span><span class="play"><i aria-hidden="true"></i>Play</span></button>`;
+  ${PV[v.src.split("?")[0]] ? preview(PV[v.src.split("?")[0]], v.poster) : filled(v.preview) ? lazyLoop(v.preview, v.poster) : `<img src="${esc(v.poster)}" alt="" loading="lazy">`}<span class="dur">${esc(v.dur)}</span><span class="play"><i aria-hidden="true"></i>Play</span></button>`;
 /* placeholders: a value is "filled" when it is set and doesn't start with "TODO:". Unfilled values render only in draft view. */
 const DRAFT = SITE.showPlaceholders === true || (SITE.showPlaceholders === "auto" && !/[?&]live\b/.test(location.search) &&
   (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || /[?&]draft\b/.test(location.search)));   /* ?live previews the public view on localhost */
