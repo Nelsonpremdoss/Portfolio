@@ -251,8 +251,8 @@ section.signature .wrap { position: relative; display: grid; gap: 28px; }
 .pv-media .screen { aspect-ratio: auto; height: 100%; border: 0; border-radius: 0; }
 .pv-media { position: relative; }
 .pv .credit span { grid-template-columns: 1fr; gap: 0; }
-/* reels: 4 across (two rows of 8) on desktop; below that, one row that scrolls sideways */
-.ft-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* reels: 5 across (two rows of 10) on desktop; below that, one row that scrolls sideways */
+.ft-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 @media (max-width: 1000px) { .ft-grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 30%; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; } .ft-grid > * { scroll-snap-align: start; } }
 @media (max-width: 640px) { .ft-grid { grid-template-columns: none; grid-auto-columns: 62%; gap: 18px 12px; } .ft-grid .pv h4 { font-size: 14px; } .ft-grid .credit { font-size: 12px; } }
 .pv .credit span + span { margin-top: 4px; }
@@ -396,7 +396,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
   <section class="track" id="fintech">
     <div class="wrap">
-      <div class="track-head"><span class="tc">00:02:00:00</span><h2>Fintech &amp; Short-form</h2><p>Short-form for Markets by Zerodha: finance topics cut for the first three seconds, with motion graphics, AI animation, grade and sound done in-house.</p></div>
+      <div class="track-head"><span class="tc">00:02:00:00</span><h2>Fintech &amp; Short-form</h2><p>Short-form for Markets by Zerodha and Acko: finance and insurance topics cut for the first three seconds, with motion graphics, AI animation, grade and sound done in-house.</p></div>
       <div class="pv-grid ft-grid" id="fintechList"></div>
     </div>
   </section>
@@ -597,9 +597,9 @@ function pieceHTML(it, media) {
 
 /* FINTECH & SHORT-FORM: the Zerodha pieces in SITE.fintech.order, as visible cards */
 (function renderFintech() {
-  const all = SITE.brandwork.flatMap((b) => b.items);
+  const all = SITE.brandwork.flatMap((b) => b.items.map((it) => ({ tag: b.tag, ...it }))).concat(SITE.fintech.items || []);
   const pieces = SITE.fintech.order.map((m) => all.find((it) => it.media === m)).filter(Boolean);
-  $("fintechList").innerHTML = pieces.map((it) => pieceHTML(it, lazyLoop(M(it.media, "mp4"), M(it.media, "jpg")))).join("");
+  $("fintechList").innerHTML = pieces.map((it) => pieceHTML(it.tag ? { ...it, type: `${it.tag} · ${it.type}` } : it, lazyLoop(M(it.media, "mp4"), M(it.media, "jpg")))).join("");
 })();
 
 /* HOW I BUILD IT: five-step pipeline, a breakdown video and the turnaround */

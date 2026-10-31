@@ -20,9 +20,17 @@ const SITE = {
         toolsNote: "TODO: list every AI tool shown in this reel (especially Higgsfield and ElevenLabs if used)" } },
   ],
 
-  /* FINTECH & SHORT-FORM: the Markets by Zerodha pieces, in this order (by `media` id from brandwork below). */
+  /* FINTECH & SHORT-FORM: Markets by Zerodha pieces (by `media` id from brandwork below) and the Acko pieces in `items`, in this order.
+     Each card's chip shows the brand's `tag` before its type. */
   fintech: {
-    order: ["markets-upi", "markets-ipo", "markets-rupee", "markets-milkymist", "markets-transformers", "markets-diamonds", "markets-night-shift", "markets-zombie"],
+    order: ["markets-upi", "markets-ipo", "markets-rupee", "markets-milkymist", "markets-transformers", "markets-diamonds", "markets-night-shift", "markets-zombie",
+      "acko-unlimited", "acko-parents"],
+    items: [
+      { tag: "Acko", type: "Short-form", title: "Unlimited health cover, compared", media: "acko-unlimited", full: "media/brand/full/acko-unlimited.mp4", dur: "2:24", v: true,
+        role: "TODO: your role on this reel", turnaround: "TODO: turnaround" },
+      { tag: "Acko", type: "Short-form", title: "If you have old parents, these are a must", media: "acko-parents", full: "media/brand/full/acko-parents.mp4", dur: "1:20", v: true,
+        role: "TODO: your role on this reel", turnaround: "TODO: turnaround" },
+        ],
   },
 
   claude: {
@@ -160,7 +168,7 @@ const SITE = {
      `url` keeps the original post for reference; it isn't shown on the page.
      Optional per piece: results, tools, turnaround (hook only where you wrote the script). Empty or "TODO:" values are hidden on the live site. */
   brandwork: [
-    { brand: "Markets by Zerodha", logo: "logos/zerodha.svg", cover: "markets-rupee", items: [
+    { brand: "Markets by Zerodha", tag: "Zerodha", logo: "logos/zerodha.svg", cover: "markets-rupee", items: [
       { type: "AI animation", title: "Why the rupee keeps falling", media: "markets-rupee", full: "media/brand/full/markets-rupee.mp4", dur: "0:57", v: true, role: "Concept and storyboard, Editing, AI generation, Sound design",
         tools: "", // TODO: add Higgsfield / Runway / Magnific / ElevenLabs here if used
         results: "TODO: views or saves (optional)", turnaround: "4 days" },
@@ -194,12 +202,6 @@ const SITE = {
     { brand: "Royal Challengers Bengaluru", sub: "RCB Kannada", logo: "logos/rcb.png", tall: true, cover: "rcb-podcast", items: [
       { type: "Podcast edit", title: "bigbasket now Podcast with Virat Kohli", media: "rcb-podcast", full: "media/brand/full/rcb-podcast.mp4", dur: "3:01", v: true, url: "https://www.instagram.com/reel/DEUfF5lS4mP/", turnaround: "1 day" },
       { type: "Feature video", title: "Inside the RCB auction table", media: "rcb-feature", full: "media/brand/full/rcb-feature.mp4", dur: "2:49", url: "https://www.instagram.com/reel/DDCdBJSMygf/", turnaround: "1 day" },
-    ] },
-    { brand: "Acko", sub: "Health insurance", logo: "logos/acko.png", cover: "acko-unlimited", items: [
-      { type: "Short-form", title: "Unlimited health cover, compared", media: "acko-unlimited", full: "media/brand/full/acko-unlimited.mp4", dur: "2:24", v: true,
-        role: "TODO: your role on this reel", turnaround: "TODO: turnaround" },
-      { type: "Short-form", title: "If you have old parents, these are a must", media: "acko-parents", full: "media/brand/full/acko-parents.mp4", dur: "1:20", v: true,
-        role: "TODO: your role on this reel", turnaround: "TODO: turnaround" },
     ] },
     { brand: "Vi", logo: "logos/vi.svg", cover: "vi-score", items: [
       { type: "Short-form", title: "Vi Score review reel", media: "vi-score", full: "media/brand/full/vi-score.mp4", dur: "0:59", v: true, url: "https://www.instagram.com/reel/DT8Aun7kjVV/", role: "Color grading, Sound design", turnaround: "1 day" },
