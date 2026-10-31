@@ -195,6 +195,12 @@ const SITE = {
       { type: "Podcast edit", title: "bigbasket now Podcast with Virat Kohli", media: "rcb-podcast", full: "media/brand/full/rcb-podcast.mp4", dur: "3:01", v: true, url: "https://www.instagram.com/reel/DEUfF5lS4mP/", turnaround: "1 day" },
       { type: "Feature video", title: "Inside the RCB auction table", media: "rcb-feature", full: "media/brand/full/rcb-feature.mp4", dur: "2:49", url: "https://www.instagram.com/reel/DDCdBJSMygf/", turnaround: "1 day" },
     ] },
+    { brand: "Acko", sub: "Health insurance", logo: "logos/acko.png", cover: "acko-unlimited", items: [
+      { type: "Short-form", title: "Unlimited health cover, compared", media: "acko-unlimited", full: "media/brand/full/acko-unlimited.mp4", dur: "2:24", v: true,
+        role: "TODO: your role on this reel", turnaround: "TODO: turnaround" },
+      { type: "Short-form", title: "If you have old parents, these are a must", media: "acko-parents", full: "media/brand/full/acko-parents.mp4", dur: "1:20", v: true,
+        role: "TODO: your role on this reel", turnaround: "TODO: turnaround" },
+    ] },
     { brand: "Vi", logo: "logos/vi.svg", cover: "vi-score", items: [
       { type: "Short-form", title: "Vi Score review reel", media: "vi-score", full: "media/brand/full/vi-score.mp4", dur: "0:59", v: true, url: "https://www.instagram.com/reel/DT8Aun7kjVV/", role: "Color grading, Sound design", turnaround: "1 day" },
     ] },
