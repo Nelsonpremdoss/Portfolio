@@ -206,6 +206,7 @@ const SITE = {
     { name: "Coca-Cola", slug: "coca-cola", logo: "logos/coca-cola.svg" },
     { name: "ALLEN", slug: "allen", logo: "logos/allen.svg", note: "The Third Idiot YouTube channel", links: [{ label: "Channel", url: "https://www.youtube.com/@thethirdidiot" }] },
     { name: "RCB", slug: "rcb", logo: "logos/rcb.png", tall: true },
+    { name: "Acko", slug: "acko", logo: "logos/acko.png" },
     { name: "Nothing", also: true, slug: "nothing", logo: "logos/nothing.svg" },
     { name: "Zoho", slug: "zoho", logo: "logos/zoho.svg", size: "mid" },
     { name: "Cleartrip", also: true, slug: "cleartrip", logo: "logos/cleartrip.svg" },

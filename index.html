@@ -251,7 +251,10 @@ section.signature .wrap { position: relative; display: grid; gap: 28px; }
 .pv-media .screen { aspect-ratio: auto; height: 100%; border: 0; border-radius: 0; }
 .pv-media { position: relative; }
 .pv .credit span { grid-template-columns: 1fr; gap: 0; }
-@media (max-width: 520px) { .ft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; } .ft-grid .pv h4 { font-size: 14px; } .ft-grid .credit { font-size: 12px; } }
+/* reels: 4 across (two rows of 8) on desktop; below that, one row that scrolls sideways */
+.ft-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .ft-grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 30%; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; } .ft-grid > * { scroll-snap-align: start; } }
+@media (max-width: 640px) { .ft-grid { grid-template-columns: none; grid-auto-columns: 62%; gap: 18px 12px; } .ft-grid .pv h4 { font-size: 14px; } .ft-grid .credit { font-size: 12px; } }
 .pv .credit span + span { margin-top: 4px; }
 
 /* how I build it: five steps in a row, stacked on narrow screens */
