@@ -73,7 +73,7 @@ const SITE = {
       { name: "AI storyboard and style frames", tools: "Magnific / GPT Image 2 / Nano Banana Pro", text: "TODO: one sentence on what was done", media: "TODO: media/pipeline/2-storyboard.jpg" },
       { name: "AI asset generation", tools: "Higgsfield / Kling / Seedance", text: "TODO: one sentence on what was done", media: "TODO: media/pipeline/3-assets.mp4" },
       { name: "Edit, motion graphics and grade", tools: "Premiere Pro, After Effects", text: "TODO: one sentence on what was done", media: "TODO: media/pipeline/4-edit.mp4" },
-      { name: "Voice, sound design and mix", tools: "ElevenLabs, Premiere / Audition", text: "TODO: one sentence on what was done", media: "TODO: media/pipeline/5-sound.jpg" },
+      { name: "Voice, sound design and mix", tools: "ElevenLabs, Suno, Premiere Pro", text: "TODO: one sentence on what was done", media: "TODO: media/pipeline/5-sound.jpg" },
     ],
     breakdown: { title: "Raw AI output vs final", src: "TODO: media/pipeline/breakdown.mp4 (20–30 s split-screen, with sound)",
       preview: "TODO: media/pipeline/breakdown-loop.mp4 (6 s silent loop)", poster: "TODO: media/pipeline/breakdown.jpg", dur: "TODO: 0:25",
@@ -150,10 +150,10 @@ const SITE = {
   tools: [
     { name: "Edit and motion", adobe: true, items: ["Adobe Premiere Pro", "Adobe After Effects", "Adobe Photoshop",
       "Adobe Illustrator"] },
-    { name: "AI video", items: ["Kling 3.0", "Seedance 2.0", "Runway", "Higgsfield"] },
-    { name: "AI image and animation", items: ["GPT Image 2", "Nano Banana Pro", "Magnific AI", "Claude Opus 5.5",
-      "Midjourney"] },
-    { name: "AI audio", items: ["ElevenLabs"] },
+    { name: "AI video", items: ["Kling 3.0", "Seedance 2.5", "Google Omni", "Wan", "Runway", "Higgsfield", "HeyGen", "Topaz Video AI"] },
+    { name: "AI image and animation", items: ["GPT Image 2", "Nano Banana Pro", "Seedream", "Midjourney", "Ideogram",
+      "Adobe Firefly", "Magnific AI", "Claude Opus 5.5"] },
+    { name: "AI audio", items: ["ElevenLabs", "Suno", "Adobe Podcast Enhance"] },
   ],
 
   /* Brand work: one folder per brand. Previews are short silent loops; `full` is what plays on the site (a file, or "yt:<id>" for YouTube's embedded player).
@@ -220,6 +220,6 @@ const SITE = {
   contact: [
     { type: "copy", label: "Email", value: "nelsonpremdoss.e@gmail.com" },
     { type: "copy", label: "Phone / WhatsApp", value: "+91 99943 17417" },
-    { type: "link", label: "LinkedIn", value: "in/nelson-premdoss-e", url: "https://www.linkedin.com/in/nelson-premdoss-e-5a8a0b144" },
+    { type: "link", label: "LinkedIn", value: "in/nelsonpremdosse", url: "https://www.linkedin.com/in/nelsonpremdosse" },
   ],
 };
