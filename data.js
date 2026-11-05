@@ -47,9 +47,6 @@ const SITE = {
   },
 
   ai: [
-    { title: "CBSE: the door", src: "media/ai-cbse.mp4", poster: "media/ai-cbse.jpg", dur: "0:40",
-      text: "The cold open of a long-form on CBSE board exams: 2 crore students, one glowing door, and the question of who it opens for.",
-      credit: { role: "TODO: your role on this film", tools: "TODO: AI tools used", turnaround: "TODO: turnaround" } },
     { title: "The Coma Patient: opening", src: "media/ai-coma-opener.mp4", poster: "media/ai-coma-opener.jpg", dur: "0:21",
       text: "A stormy night, a truck on a bridge, the crash. The cold open of a documentary about a coma patient.", yt: "https://www.youtube.com/watch?v=mmwBrd79oBo",
       credit: { role: "Concept and storyboard, script and direction, AI generation",
@@ -73,6 +70,9 @@ const SITE = {
     { title: "Wavelengths: Herschel finds infrared", src: "media/ai-herschel.mp4", poster: "media/ai-herschel.jpg", dur: "0:31",
       text: "William Herschel splits sunlight with a prism and finds heat beyond the red: a period recreation built shot by shot with AI.",
       credit: { role: "Concept and storyboard, Editing, AI generation, Color grading, Sound design", tools: "Kling" } },
+    { title: "CBSE: the door", src: "media/ai-cbse.mp4", poster: "media/ai-cbse.jpg", dur: "0:40",
+      text: "The cold open of a long-form on CBSE board exams: 2 crore students, one glowing door, and the question of who it opens for.",
+      credit: { role: "TODO: your role on this film", tools: "TODO: AI tools used", turnaround: "TODO: turnaround" } },
   ],
 
   /* HOW I BUILD IT: one project as a five-step pipeline. `media` is an image (.jpg/.png/.webp) or a short silent loop (.mp4). */
